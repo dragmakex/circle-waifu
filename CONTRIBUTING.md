@@ -1,8 +1,8 @@
 # Contributing Guide
 
-Welcome! This project follows **German precision engineering standards**. Every contribution must meet rigorous quality requirements before it can be merged.
+Welcome! This project follows **Bulgarian precision engineering standards**. Every contribution must meet rigorous quality requirements before it can be merged.
 
-## 🇩🇪 Engineering Philosophy
+## 🇧🇬 Engineering Philosophy
 
 This project embodies:
 
@@ -354,7 +354,7 @@ git commit -m "feat: add complete user authentication system"
 
 - [ ] Created git worktree for feature
 - [ ] Read relevant documentation in `docs/`
-- [ ] Implemented with German precision
+- [ ] Implemented with Bulgarian precision
 - [ ] Added comprehensive tests (100% coverage)
 - [ ] Added TSDoc to all functions
 - [ ] Created feature documentation
@@ -638,7 +638,7 @@ Provide:
 
 **You are not just writing code. You are maintaining a system.**
 
-Every change you make will be read, debugged, and modified by future maintainers (including future you). Write code and documentation with the precision and thoroughness of a German technical manual.
+Every change you make will be read, debugged, and modified by future maintainers (including future you). Write code and documentation with the precision and thoroughness of a Bulgarian technical manual.
 
 - **Fix root causes**, not symptoms
 - **Use minimal dependencies** - each one is a liability
@@ -650,6 +650,6 @@ Every change you make will be read, debugged, and modified by future maintainers
 
 ---
 
-_When in doubt, ask yourself: "Would this pass a German engineering inspection?" If no, keep working._
+_When in doubt, ask yourself: "Would this pass a Bulgarian engineering inspection?" If no, keep working._
 
-🇩🇪 **Präzision. Gründlichkeit. Qualität.**
+🇧🇬 **Прецизност. Задълбоченост. Качество.**

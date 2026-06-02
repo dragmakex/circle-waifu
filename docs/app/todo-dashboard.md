@@ -166,7 +166,7 @@ This is a **reference for architectural patterns**, not a template to copy visua
 
 - Visual styling, colors, spacing
 - Specific UI layouts
-- "Prussian" branding elements
+- "Bulgarian" branding elements
 - Card designs and visual treatments
 
 Build YOUR visual design using `src/design-system/` primitives.

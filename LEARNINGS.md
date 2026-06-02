@@ -1,1 +1,2 @@
 - 2026-04-11: `oxlint` panics when linting files outside the repository root (`path is expected to be under the root`). Keep lint fixtures under `cwd()` for rule tests.
+- 2026-06-02: After dependencies are installed, `bun run lint` currently fails on pre-existing `src/routes/index.tsx` route orchestration and `src/lib/pyroscope-server.ts` JSDoc issues unrelated to footer/localization edits.

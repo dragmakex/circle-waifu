@@ -552,4 +552,4 @@ Effect-TS cannot provide:
 
 ---
 
-🫡🇩🇪 Prussian virtues: Defense in depth, multiple barriers, assume each can fail.
+🫡🇧🇬 Bulgarian virtues: Defense in depth, multiple barriers, assume each can fail.

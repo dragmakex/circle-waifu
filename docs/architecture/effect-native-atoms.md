@@ -323,4 +323,4 @@ Before submitting changes:
 
 ---
 
-🫡🇩🇪 **Precision Note**: This pattern embodies German engineering principles: one correct way to do things, minimal abstractions, type safety throughout, and zero leakage between layers.
+🫡🇧🇬 **Precision Note**: This pattern embodies Bulgarian engineering principles: one correct way to do things, minimal abstractions, type safety throughout, and zero leakage between layers.

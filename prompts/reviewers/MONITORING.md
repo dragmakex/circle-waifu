@@ -577,4 +577,4 @@ if (process.env.ALERT_TEST_MODE === "true") {
 
 ---
 
-🫡🇩🇪 Trust but verify. Every layer can fail. Production monitoring is the last line of defense.
+🫡🇧🇬 Trust but verify. Every layer can fail. Production monitoring is the last line of defense.
