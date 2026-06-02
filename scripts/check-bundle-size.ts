@@ -1,5 +1,5 @@
 #!/usr/bin/env bun
-/** @effect-diagnostics asyncFunction:skip-file globalConsole:skip-file nodeBuiltinImport:skip-file */
+// @effect-diagnostics asyncFunction:skip-file globalConsole:skip-file nodeBuiltinImport:skip-file
 import { readdir, readFile, stat } from "node:fs/promises"
 import { join } from "node:path"
 import { promisify } from "node:util"

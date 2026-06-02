@@ -1,4 +1,4 @@
-/** @effect-diagnostics nodeBuiltinImport:skip-file */
+// @effect-diagnostics nodeBuiltinImport:skip-file
 import { readdirSync, statSync } from "node:fs"
 import { join } from "node:path"
 import { runDesignSystemLint } from "./lint-design-system-lib"

@@ -18,7 +18,7 @@ export interface ClientTelemetryConfig {
   replaysOnErrorSampleRate?: number
 }
 
-/** @effect-diagnostics globalConsole:skip-file */
+// @effect-diagnostics globalConsole:skip-file
 /**
  * Initialize Sentry for the React application
  * @param config - The client telemetry configuration.

@@ -1,4 +1,4 @@
-/** @effect-diagnostics newPromise:skip-file globalTimers:skip-file asyncFunction:skip-file */
+// @effect-diagnostics newPromise:skip-file globalTimers:skip-file asyncFunction:skip-file
 import { RegistryContext } from "@effect/atom-react"
 import * as Schema from "effect/Schema"
 import * as Atom from "effect/unstable/reactivity/Atom"

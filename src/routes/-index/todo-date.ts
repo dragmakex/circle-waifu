@@ -1,4 +1,5 @@
 import { TodoDate, type TodoDate as TodoDateType } from "@/api/todo-schema"
+import * as DateTime from "effect/DateTime"
 import * as Schema from "effect/Schema"
 
 const decodeTodoDate = Schema.decodeUnknownSync(TodoDate)
@@ -26,7 +27,7 @@ export function parseTodoDateInput(value: string): TodoDateType | null {
  * @returns A localized display label.
  */
 export function formatTodoDate(date: TodoDateType): string {
-  return new Date(`${date}T00:00:00.000Z`).toLocaleDateString(undefined, {
+  return DateTime.format(DateTime.makeUnsafe(`${date}T00:00:00.000Z`), {
     day: "numeric",
     month: "short",
     year: "numeric",
@@ -40,9 +41,9 @@ export function formatTodoDate(date: TodoDateType): string {
  * @returns The current UTC date string.
  */
 export function todayTodoDate(): TodoDateType {
-  const now = new Date()
-  const yyyy = String(now.getUTCFullYear())
-  const mm = String(now.getUTCMonth() + 1).padStart(2, "0")
-  const dd = String(now.getUTCDate()).padStart(2, "0")
+  const now = DateTime.nowUnsafe()
+  const yyyy = String(DateTime.getPartUtc(now, "year"))
+  const mm = String(DateTime.getPartUtc(now, "month")).padStart(2, "0")
+  const dd = String(DateTime.getPartUtc(now, "day")).padStart(2, "0")
   return decodeTodoDate(`${yyyy}-${mm}-${dd}`)
 }

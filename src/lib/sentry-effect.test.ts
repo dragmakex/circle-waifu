@@ -1,4 +1,4 @@
-/** @effect-diagnostics asyncFunction:skip-file */
+// @effect-diagnostics asyncFunction:skip-file
 /**
  * Pattern: Integration Test with Layer
  * Purpose: Verify @sentry/effect Layer constructs correctly and integrates

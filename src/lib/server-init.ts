@@ -1,4 +1,4 @@
-/** @effect-diagnostics processEnv:skip-file */
+// @effect-diagnostics processEnv:skip-file
 /**
  * Server-side initialization — call once at startup before handling requests.
  *

@@ -1,4 +1,4 @@
-/** @effect-diagnostics asyncFunction:skip-file nodeBuiltinImport:skip-file */
+// @effect-diagnostics asyncFunction:skip-file nodeBuiltinImport:skip-file
 import { execFile } from "node:child_process"
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs"
 import { join } from "node:path"

@@ -1,3 +1,4 @@
+import * as Effect from "effect/Effect"
 import * as Option from "effect/Option"
 import { describe, expect, it, vi } from "vitest"
 
@@ -18,12 +19,15 @@ vi.mock("./use-refresh-dashboard", () => ({
   useRefreshDashboard: () => vi.fn(),
 }))
 
+const assertTodoItemExports = Effect.gen(function*() {
+  const { TodoItem } = yield* Effect.promise(() => import("./todo-item"))
+  expect(TodoItem).toBeDefined()
+  expect(typeof TodoItem).toBe("function")
+})
+
 describe("TodoItem", () => {
-  it("exports TodoItem component", async () => {
-    const { TodoItem } = await import("./todo-item")
-    expect(TodoItem).toBeDefined()
-    expect(typeof TodoItem).toBe("function")
-  })
+  it("exports TodoItem component", () =>
+    Effect.runPromise(assertTodoItemExports))
 
   it("update payload uses Option for title, completion, and due date", () => {
     const togglePayload = {

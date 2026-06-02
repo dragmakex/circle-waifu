@@ -1,4 +1,4 @@
-/** @effect-diagnostics asyncFunction:skip-file processEnv:skip-file */
+// @effect-diagnostics asyncFunction:skip-file processEnv:skip-file
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
 /**

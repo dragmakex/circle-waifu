@@ -1,4 +1,4 @@
-/** @effect-diagnostics nodeBuiltinImport:skip-file */
+// @effect-diagnostics nodeBuiltinImport:skip-file
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs"
 import { join } from "node:path"
 import { cwd } from "node:process"

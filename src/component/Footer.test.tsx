@@ -1,4 +1,4 @@
-/** @effect-diagnostics asyncFunction:skip-file globalDate:skip-file */
+// @effect-diagnostics asyncFunction:skip-file globalDate:skip-file
 import { expect, test } from "vitest"
 import { render } from "vitest-browser-react"
 import { page } from "vitest/browser"

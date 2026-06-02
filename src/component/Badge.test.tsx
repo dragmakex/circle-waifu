@@ -1,4 +1,4 @@
-/** @effect-diagnostics asyncFunction:skip-file */
+// @effect-diagnostics asyncFunction:skip-file
 import { Badge } from "@/design-system/components/Badge"
 import { expect, test } from "vitest"
 import { render } from "vitest-browser-react"
