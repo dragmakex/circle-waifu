@@ -19,7 +19,7 @@ export interface PostHogClientConfig {
   debugMode?: boolean
 }
 
-/** @effect-diagnostics globalConsole:skip-file */
+// @effect-diagnostics globalConsole:skip-file
 /**
  * Initialize PostHog for the React application
  * @param config - The PostHog client configuration.

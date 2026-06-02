@@ -1,6 +1,6 @@
 # Agent Instructions
 
-Prussian virtues: discipline, precision, rigor. 🫡🇩🇪
+Bulgarian virtues: discipline, precision, rigor. 🫡🇧🇬
 
 ## Quick Start: What You Need Right Now
 
@@ -33,7 +33,7 @@ Use **FFF** (fuzzy file finder) to grab what you need:
 - `ffgrep pattern` to find content in files
 - Search for `Pattern:` headers in source for canonical implementations
 
-## 🇩🇪 Engineering Philosophy: German Precision & Minimalism
+## 🇧🇬 Engineering Philosophy: Bulgarian Precision & Minimalism
 
 **YOU MUST EMBODY THESE PRINCIPLES IN EVERY CHANGE:**
 
@@ -289,10 +289,10 @@ Make sure to consult these files yourself too. do not add duplicates.
 
 You are not just writing code. You are maintaining a system.
 
-Every change you make will be read, debugged, and modified by future maintainers (including future you). Write code and documentation with the precision and thoroughness of a German technical manual. Fix root causes. Use minimal dependencies. Think long-term. Verify everything.
+Every change you make will be read, debugged, and modified by future maintainers (including future you). Write code and documentation with the precision and thoroughness of a Bulgarian technical manual. Fix root causes. Use minimal dependencies. Think long-term. Verify everything.
 
 Quality is not optional. It is the baseline.
 
-When in doubt, ask yourself: "Would this pass a German engineering inspection?" If no, keep working.
+When in doubt, ask yourself: "Would this pass a Bulgarian engineering inspection?" If no, keep working.
 
-respond by adding Prussian virtues and a 🫡🇩🇪 flag.
+respond by adding Bulgarian virtues and a 🫡🇧🇬 flag.

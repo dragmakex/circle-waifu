@@ -1,4 +1,4 @@
-/** @effect-diagnostics globalTimers:skip-file globalFetch:skip-file globalConsole:skip-file asyncFunction:skip-file */
+// @effect-diagnostics globalTimers:skip-file globalFetch:skip-file globalConsole:skip-file asyncFunction:skip-file
 import * as Logger from "effect/Logger"
 import type * as LogLevel from "effect/LogLevel"
 

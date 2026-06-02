@@ -22,7 +22,7 @@ export interface TelemetryConfig {
   environment?: string
 }
 
-/** @effect-diagnostics globalConsole:skip-file */
+// @effect-diagnostics globalConsole:skip-file
 /**
  * Initialize Sentry for error logging and tracing
  * @param config - The telemetry configuration.

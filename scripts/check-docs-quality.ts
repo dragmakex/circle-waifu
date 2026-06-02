@@ -1,10 +1,10 @@
 #!/usr/bin/env bun
-/** @effect-diagnostics asyncFunction:skip-file globalConsole:skip-file nodeBuiltinImport:skip-file */
+// @effect-diagnostics asyncFunction:skip-file globalConsole:skip-file nodeBuiltinImport:skip-file
 
 /**
  * Documentation Quality Checker
  *
- * Enforces German precision engineering standards for documentation:
+ * Enforces Bulgarian precision engineering standards for documentation:
  * 1. TSDoc completeness and accuracy
  * 2. Markdown documentation structure in docs/app/
  * 3. Implementation alignment (docs match actual code)
@@ -301,7 +301,7 @@ function printSummary(): void {
 
   if (issues.length === 0 && warnings.length === 0) {
     console.log("\n✅ All documentation quality checks passed!")
-    console.log("\n🇩🇪 German precision engineering standards met.")
+    console.log("\n🇧🇬 Bulgarian precision engineering standards met.")
     return
   }
 

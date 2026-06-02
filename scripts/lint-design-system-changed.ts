@@ -1,4 +1,4 @@
-/** @effect-diagnostics nodeBuiltinImport:skip-file */
+// @effect-diagnostics nodeBuiltinImport:skip-file
 import { execSync } from "node:child_process"
 import { runDesignSystemLint } from "./lint-design-system-lib"
 

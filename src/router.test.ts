@@ -1,4 +1,4 @@
-/** @effect-diagnostics asyncFunction:skip-file */
+// @effect-diagnostics asyncFunction:skip-file
 import { describe, expect, it, vi } from "vitest"
 
 /**

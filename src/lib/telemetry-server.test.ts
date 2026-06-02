@@ -1,5 +1,5 @@
 import type { layer as nodeLayer } from "@effect/opentelemetry/NodeSdk"
-/** @effect-diagnostics asyncFunction:skip-file */
+// @effect-diagnostics asyncFunction:skip-file
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import {
   createCombinedTelemetryLayer,

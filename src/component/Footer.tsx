@@ -6,14 +6,14 @@ import { Stack } from "@/design-system/primitives/Stack"
 import * as DateTime from "effect/DateTime"
 
 /**
- * Footer component displaying Prussian engineering wisdom.
+ * Footer component displaying Bulgarian engineering wisdom.
  *
  * Renders as `<footer>` — the browser's content information landmark.
  *
  * @remarks
- * This component embodies the German precision philosophy of the codebase.
- * As Frederick the Great would say: "He who defends everything defends nothing."
- * Similarly: "He who types everything as `any` types nothing."
+ * This component embodies the Bulgarian precision philosophy of the codebase.
+ * As the national motto says: "Unity makes strength."
+ * Similarly: "Strong unions still need precise types."
  *
  * @returns The rendered footer element.
  */
@@ -25,20 +25,20 @@ export function Footer() {
       <Card>
         <Inline align="between" wrap>
           <Stack gap="2xs">
-            <Heading as="h2" tone="section" data-testid="prussian-motto">
-              Ordnung muss sein!
+            <Heading as="h2" tone="section" data-testid="bulgarian-motto">
+              Unity makes strength!
             </Heading>
-            <Text tone="muted" data-testid="prussian-joke">
-              Why do Prussian programmers never use `any`? Because even
-              Frederick the Great demanded strict typing in his army.
+            <Text tone="muted" data-testid="bulgarian-joke">
+              Why do Bulgarian programmers never use `any`? Because strong
+              unions still need precise types.
             </Text>
           </Stack>
           <Stack gap="2xs" align="center">
             <Text as="span" tone="caption" data-testid="footer-copyright">
-              © {currentYear} Built with German Precision
+              © {currentYear} Built with Bulgarian Precision
             </Text>
             <Text as="span" data-testid="footer-flag">
-              🇩🇪
+              🇧🇬
             </Text>
           </Stack>
         </Inline>

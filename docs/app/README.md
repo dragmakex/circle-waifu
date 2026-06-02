@@ -4,7 +4,7 @@ This directory contains **detailed documentation for all features and significan
 
 ## Purpose & Structure
 
-When AI agents or developers implement features, fix bugs, or make significant changes to the system, they **must document their work here** with the precision and thoroughness of a German technical manual. For Bugs that means writing a clear commit description that includes the big and reasoning using conventional commits and the reasoning for the fix/change. We can therefore save on documentation scope because version control extends it with the details of why something changed. Documentation therefore does not need to document every single small thing. It needs to be available to serve as reference, guide and overarching map to the system.
+When AI agents or developers implement features, fix bugs, or make significant changes to the system, they **must document their work here** with the precision and thoroughness of a Bulgarian technical manual. For Bugs that means writing a clear commit description that includes the big and reasoning using conventional commits and the reasoning for the fix/change. We can therefore save on documentation scope because version control extends it with the details of why something changed. Documentation therefore does not need to document every single small thing. It needs to be available to serve as reference, guide and overarching map to the system.
 
 Each feature, bug fix, or significant change only gets its own file if it is not better suited in a comprehensive document that aligns well.
 We want to minimize cognitive overhead and increase density of our documentation. That is most paramount. Striking the balance between just enough so context is explicitly clear and not too much so it's overwhelming. Code for example documents it self with TSDoc and the actual code, so we merely need to document decisions, assumptions and how the code ties together in data flows and on the architectural level.
@@ -35,7 +35,7 @@ Be aware to not just write what is already in code, if that's the case we can ju
 
 ### Precision
 
-- Every detail matters - write like a German technical manual
+- Every detail matters - write like a Bulgarian technical manual
 - Be explicit, not implicit - future maintainers don't know your context
 - Document the **why**, not just the **what** (code shows what, docs explain why)
 
@@ -149,6 +149,6 @@ sequenceDiagram
 
 ---
 
-**Remember**: You are not just writing code. You are maintaining a system. Document with the precision of a German engineering manual.
+**Remember**: You are not just writing code. You are maintaining a system. Document with the precision of a Bulgarian engineering manual.
 Default to the smallest documentation shape that explains the change well. One dense README.md per functional unit is preferred unless the topic is large enough to justify splitting into architecture.md, implementation.md, or diagrams/.
 For simple learnings we have LEARNINGS.md

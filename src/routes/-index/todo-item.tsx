@@ -11,6 +11,7 @@ import { Grid } from "@/design-system/primitives/Grid"
 import { Inline } from "@/design-system/primitives/Inline"
 import { Stack } from "@/design-system/primitives/Stack"
 import { useAtom } from "@effect/atom-react"
+import * as DateTime from "effect/DateTime"
 import * as Option from "effect/Option"
 import * as AsyncResult from "effect/unstable/reactivity/AsyncResult"
 import { useState } from "react"
@@ -43,13 +44,27 @@ const dueLabel = (todo: Todo): string => {
 }
 
 const updatedLabel = (todo: Todo): string => {
-  const date = new Date(todo.updatedAt.epochMilliseconds)
-  const yyyy = String(date.getFullYear())
-  const mm = String(date.getMonth() + 1).padStart(2, "0")
-  const dd = String(date.getDate()).padStart(2, "0")
-  const hh = String(date.getHours()).padStart(2, "0")
-  const min = String(date.getMinutes()).padStart(2, "0")
-  const ss = String(date.getSeconds()).padStart(2, "0")
+  const yyyy = String(DateTime.getPartUtc(todo.updatedAt, "year"))
+  const mm = String(DateTime.getPartUtc(todo.updatedAt, "month")).padStart(
+    2,
+    "0",
+  )
+  const dd = String(DateTime.getPartUtc(todo.updatedAt, "day")).padStart(
+    2,
+    "0",
+  )
+  const hh = String(DateTime.getPartUtc(todo.updatedAt, "hour")).padStart(
+    2,
+    "0",
+  )
+  const min = String(DateTime.getPartUtc(todo.updatedAt, "minute")).padStart(
+    2,
+    "0",
+  )
+  const ss = String(DateTime.getPartUtc(todo.updatedAt, "second")).padStart(
+    2,
+    "0",
+  )
   return `Updated ${yyyy}-${mm}-${dd}, ${hh}:${min}:${ss}`
 }
 

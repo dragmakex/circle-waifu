@@ -1,3 +1,4 @@
+import * as Effect from "effect/Effect"
 import { describe, expect, it, vi } from "vitest"
 
 vi.mock("./create-todo-form", () => ({
@@ -16,10 +17,12 @@ vi.mock("./recent-activity", () => ({
   RecentActivity: () => null,
 }))
 
+const assertAppExports = Effect.gen(function*() {
+  const { App } = yield* Effect.promise(() => import("./app"))
+  expect(App).toBeDefined()
+  expect(typeof App).toBe("function")
+})
+
 describe("App", () => {
-  it("exports App component", async () => {
-    const { App } = await import("./app")
-    expect(App).toBeDefined()
-    expect(typeof App).toBe("function")
-  })
+  it("exports App component", () => Effect.runPromise(assertAppExports))
 })

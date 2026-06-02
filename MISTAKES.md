@@ -1,3 +1,5 @@
 - 2026-04-11: I attempted large multi-edit tool calls with malformed JSON payload tails. Fix: keep edit calls minimal and validate payload shape before submitting.
 - 2026-04-15: I ran `bun run validate` before formatting and hit `dprint check` failures. Fix: run `bun run format` immediately after prompt/schema edits that introduce long lines, then run full validation.
 - 2026-04-16: I passed backticks in a `gh pr create --body` shell command, which triggered unintended command substitution warnings. Fix: avoid backticks in unescaped shell strings or use single-quoted heredoc/file input for PR bodies.
+- 2026-06-02: I ran `bun run format:check` before dependencies were installed and hit `dprint: command not found`. Fix: check `node_modules` first, run `bun install`, or use `bunx dprint` in fresh checkouts.
+- 2026-06-02: I used an over-broad scripted replacement for `@effect-diagnostics` comments and temporarily damaged unrelated JSDoc closers. Fix: use an anchored one-line regex and inspect the diff immediately before continuing.

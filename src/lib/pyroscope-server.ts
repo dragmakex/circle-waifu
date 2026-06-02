@@ -128,6 +128,7 @@ const shutdownProgram = Effect.gen(function*() {
  *
  * @param options - Optional overrides for initialization.
  * @param options.configProvider - Config provider supplying Pyroscope settings.
+ * @returns A promise that resolves when initialization has completed.
  */
 export function initPyroscopeServer(options?: {
   readonly configProvider?: ConfigProvider.ConfigProvider
@@ -142,6 +143,8 @@ export function initPyroscopeServer(options?: {
 
 /**
  * Stop Pyroscope if initialized.
+ *
+ * @returns A promise that resolves when shutdown has completed.
  */
 export function shutdownPyroscopeServer() {
   return Effect.runPromise(shutdownProgram)

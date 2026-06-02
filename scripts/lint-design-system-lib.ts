@@ -1,4 +1,4 @@
-/** @effect-diagnostics asyncFunction:skip-file globalConsole:skip-file nodeBuiltinImport:skip-file */
+// @effect-diagnostics asyncFunction:skip-file globalConsole:skip-file nodeBuiltinImport:skip-file
 import { readdirSync, readFileSync, statSync } from "node:fs"
 import { join, relative } from "node:path"
 import { cwd, exit } from "node:process"

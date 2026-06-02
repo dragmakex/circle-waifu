@@ -353,7 +353,7 @@ It's symlinked to `src/routes/-index/` so it runs as the demo.
 **⚠️ IMPORTANT DISTINCTION:**
 
 - ✅ **COPY**: How atoms are wired, how mutations work, component composition patterns
-- ❌ **IGNORE**: The visual styling, colors, the specific card layouts, the "Prussian" branding
+- ❌ **IGNORE**: The visual styling, colors, the specific card layouts, the "Bulgarian" branding
 
 Build YOUR visual identity using the design-system primitives (`src/design-system/`).
 
@@ -440,4 +440,4 @@ Core Patterns (in src/):
 
 ---
 
-🫡🇩🇪 **Prussian Efficiency**: Don't reinvent. Copy, adapt, ship.
+🫡🇧🇬 **Bulgarian Efficiency**: Don't reinvent. Copy, adapt, ship.

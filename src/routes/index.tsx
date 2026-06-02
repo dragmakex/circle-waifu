@@ -5,25 +5,30 @@ import { createFileRoute } from "@tanstack/react-router"
 import { createServerFn } from "@tanstack/react-start"
 import * as Clock from "effect/Clock"
 import * as Effect from "effect/Effect"
+import { pipe } from "effect/Function"
 import * as AsyncResult from "effect/unstable/reactivity/AsyncResult"
 import { App } from "./-index/app"
 import { dashboardSnapshotAtom } from "./-index/atoms"
 import { serverRuntime } from "./api/$"
 
-const getTodoDashboard = createServerFn({ method: "GET" }).handler(() =>
-  serverRuntime.runPromise(
-    Effect.gen(function*() {
-      const snapshot = yield* getTodoDashboardSnapshot
-      const dehydratedAt = yield* Clock.currentTimeMillis
-      return [
+const getTodoDashboardHydration = pipe(
+  getTodoDashboardSnapshot,
+  Effect.flatMap((snapshot) =>
+    pipe(
+      Clock.currentTimeMillis,
+      Effect.map((dehydratedAt) => [
         dehydrate(
           dashboardSnapshotAtom.remote,
           AsyncResult.success(snapshot),
           dehydratedAt,
         ),
-      ]
-    }),
-  )
+      ]),
+    )
+  ),
+)
+
+const getTodoDashboard = createServerFn({ method: "GET" }).handler(() =>
+  serverRuntime.runPromise(getTodoDashboardHydration)
 )
 
 export const Route = createFileRoute("/")({
