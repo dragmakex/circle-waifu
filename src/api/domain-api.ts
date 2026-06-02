@@ -1,78 +1,80 @@
 /**
  * Pattern: HttpApi Definition
- * Purpose: Type-safe HTTP contract using effect/unstable/httpapi
+ * Purpose: Type-safe HTTP contract for Circle Waifu using effect/unstable/httpapi
  * See: docs/architecture/effect-simple-made-easy-mapping.md
  */
 
-import * as Schema from "effect/Schema"
+import {
+  FarcasterAuthInput,
+  LabDashboardSnapshot,
+  MissionPrepareInput,
+  MissionVerifyInput,
+  NotificationSubscribeInput,
+  PoolEnterInput,
+  WaifuProfileInput,
+  WeeklyPool,
+} from "@/api/circle-waifu-schema"
 import * as HttpApi from "effect/unstable/httpapi/HttpApi"
 import * as HttpApiEndpoint from "effect/unstable/httpapi/HttpApiEndpoint"
 import * as HttpApiGroup from "effect/unstable/httpapi/HttpApiGroup"
-import {
-  CreateTodoInput,
-  Todo,
-  TodoDashboardSnapshot,
-  TodoGroup,
-  TodoId,
-  TodoNotFound,
-  TodoStats,
-  UpdateTodoInput,
-} from "./todo-schema"
 
-export class TodosApiGroup extends HttpApiGroup
-  .make("todos")
+export class CircleWaifuApiGroup extends HttpApiGroup
+  .make("circleWaifu")
   .add(
-    HttpApiEndpoint.get("list", "/todos", {
-      success: Schema.Array(Todo),
+    HttpApiEndpoint.get("labSnapshot", "/lab/snapshot", {
+      success: LabDashboardSnapshot,
     }),
   )
   .add(
-    HttpApiEndpoint.get("stats", "/todos/stats", {
-      success: TodoStats,
+    HttpApiEndpoint.post("missionPrepare", "/mission/prepare", {
+      payload: MissionPrepareInput,
+      success: LabDashboardSnapshot,
     }),
   )
   .add(
-    HttpApiEndpoint.get("groups", "/todos/groups", {
-      success: Schema.Array(TodoGroup),
+    HttpApiEndpoint.post("missionVerify", "/mission/verify", {
+      payload: MissionVerifyInput,
+      success: LabDashboardSnapshot,
     }),
   )
   .add(
-    HttpApiEndpoint.get("snapshot", "/todos/snapshot", {
-      success: TodoDashboardSnapshot,
+    HttpApiEndpoint.get("poolSnapshot", "/pool/snapshot", {
+      success: WeeklyPool,
     }),
   )
   .add(
-    HttpApiEndpoint.get("getById", "/todos/:id", {
-      params: { id: TodoId },
-      success: Todo,
-      error: TodoNotFound,
+    HttpApiEndpoint.post("poolEnter", "/pool/enter", {
+      payload: PoolEnterInput,
+      success: LabDashboardSnapshot,
     }),
   )
   .add(
-    HttpApiEndpoint.post("create", "/todos", {
-      payload: CreateTodoInput,
-      success: TodoDashboardSnapshot,
+    HttpApiEndpoint.get("poolDrawStatus", "/pool/draw-status", {
+      success: WeeklyPool,
     }),
   )
   .add(
-    HttpApiEndpoint.patch("update", "/todos/:id", {
-      params: { id: TodoId },
-      payload: UpdateTodoInput,
-      success: TodoDashboardSnapshot,
-      error: TodoNotFound,
+    HttpApiEndpoint.post("waifuUpdateProfile", "/waifu/profile", {
+      payload: WaifuProfileInput,
+      success: LabDashboardSnapshot,
     }),
   )
   .add(
-    HttpApiEndpoint.delete("remove", "/todos/:id", {
-      params: { id: TodoId },
-      success: TodoDashboardSnapshot,
-      error: TodoNotFound,
+    HttpApiEndpoint.post("farcasterAuthVerify", "/farcaster/auth", {
+      payload: FarcasterAuthInput,
+      success: LabDashboardSnapshot,
+    }),
+  )
+  .add(
+    HttpApiEndpoint.post("notificationSubscribe", "/notifications", {
+      payload: NotificationSubscribeInput,
+      success: LabDashboardSnapshot,
     }),
   )
 {}
 
 export class DomainApi extends HttpApi
   .make("api")
-  .add(TodosApiGroup)
+  .add(CircleWaifuApiGroup)
   .prefix("/api")
 {}

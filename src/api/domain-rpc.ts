@@ -1,58 +1,56 @@
 /**
  * Pattern: RpcGroup API Definition
- * Purpose: Type-safe RPC contract using effect/unstable/rpc
+ * Purpose: Type-safe Circle Waifu RPC contract using effect/unstable/rpc
  * See: docs/architecture/effect-simple-made-easy-mapping.md
  */
 
-import * as Schema from "effect/Schema"
+import {
+  FarcasterAuthInput,
+  LabDashboardSnapshot,
+  MissionPrepareInput,
+  MissionVerifyInput,
+  NotificationSubscribeInput,
+  PoolEnterInput,
+  WaifuProfileInput,
+  WeeklyPool,
+} from "@/api/circle-waifu-schema"
 import * as Rpc from "effect/unstable/rpc/Rpc"
 import * as RpcGroup from "effect/unstable/rpc/RpcGroup"
-import {
-  CreateTodoInput,
-  Todo,
-  TodoDashboardSnapshot,
-  TodoGroup,
-  TodoId,
-  TodoNotFound,
-  TodoStats,
-  UpdateTodoInput,
-} from "./todo-schema"
 
-export class TodosRpc extends RpcGroup
-  .make(
-    Rpc.make("list", {
-      success: Schema.Array(Todo),
-    }),
-    Rpc.make("stats", {
-      success: TodoStats,
-    }),
-    Rpc.make("groups", {
-      success: Schema.Array(TodoGroup),
-    }),
-    Rpc.make("snapshot", {
-      success: TodoDashboardSnapshot,
-    }),
-    Rpc.make("getById", {
-      success: Todo,
-      error: TodoNotFound,
-      payload: { id: TodoId },
-    }),
-    Rpc.make("create", {
-      success: TodoDashboardSnapshot,
-      payload: { input: CreateTodoInput },
-    }),
-    Rpc.make("update", {
-      success: TodoDashboardSnapshot,
-      error: TodoNotFound,
-      payload: { id: TodoId, input: UpdateTodoInput },
-    }),
-    Rpc.make("remove", {
-      success: TodoDashboardSnapshot,
-      error: TodoNotFound,
-      payload: { id: TodoId },
-    }),
-  )
-  .prefix("todos_")
-{}
+export class CircleWaifuRpc extends RpcGroup.make(
+  Rpc.make("lab_snapshot", {
+    success: LabDashboardSnapshot,
+  }),
+  Rpc.make("mission_prepare", {
+    success: LabDashboardSnapshot,
+    payload: { input: MissionPrepareInput },
+  }),
+  Rpc.make("mission_verify", {
+    success: LabDashboardSnapshot,
+    payload: { input: MissionVerifyInput },
+  }),
+  Rpc.make("pool_snapshot", {
+    success: WeeklyPool,
+  }),
+  Rpc.make("pool_enter", {
+    success: LabDashboardSnapshot,
+    payload: { input: PoolEnterInput },
+  }),
+  Rpc.make("pool_draw_status", {
+    success: WeeklyPool,
+  }),
+  Rpc.make("waifu_update_profile", {
+    success: LabDashboardSnapshot,
+    payload: { input: WaifuProfileInput },
+  }),
+  Rpc.make("farcaster_auth_verify", {
+    success: LabDashboardSnapshot,
+    payload: { input: FarcasterAuthInput },
+  }),
+  Rpc.make("notification_subscribe", {
+    success: LabDashboardSnapshot,
+    payload: { input: NotificationSubscribeInput },
+  }),
+) {}
 
-export class DomainRpc extends TodosRpc {}
+export class DomainRpc extends CircleWaifuRpc {}

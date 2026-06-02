@@ -3,57 +3,53 @@ import { Card } from "@/design-system/components/Card"
 import { Page } from "@/design-system/components/Page"
 import { PageHeader } from "@/design-system/components/PageHeader"
 import { Text } from "@/design-system/components/Text"
-import { Grid } from "@/design-system/primitives/Grid"
 import { Stack } from "@/design-system/primitives/Stack"
-import { useState } from "react"
-import { CreateTodoForm } from "./create-todo-form"
-import { type DashboardFilter, dashboardFilterKeys } from "./dashboard-filters"
-import { DashboardStats } from "./dashboard-stats"
-import { GroupedTodoBoard } from "./grouped-todo-board"
-import { RecentActivity } from "./recent-activity"
-
-const defaultFilter: DashboardFilter = dashboardFilterKeys[0]
+import { useAtomValue } from "@effect/atom-react"
+import sdk from "@farcaster/miniapp-sdk"
+import * as AsyncResult from "effect/unstable/reactivity/AsyncResult"
+import { useEffect } from "react"
+import { labDashboardAtom } from "./atoms"
+import { LabConsole } from "./lab-console"
 
 /**
- * The main application component.
+ * Renders the Farcaster Mini App lab console shell.
  *
- * @returns The rendered application.
+ * @returns Circle Waifu application UI.
  */
 export function App() {
-  const [activeFilter, setActiveFilter] = useState<DashboardFilter>(
-    defaultFilter,
-  )
+  const result = useAtomValue(labDashboardAtom)
+
+  useEffect(() => {
+    if (result._tag !== "Initial" && !result.waiting) {
+      void sdk.actions.ready()
+    }
+  }, [result])
 
   return (
     <Page>
       <Stack gap="xl">
         <PageHeader
-          title="Todo control room"
-          description="A richer todo dashboard that keeps the canonical list, grouped board, and summary counts synchronized from one mutation response."
+          title="Circle Waifu"
+          description="Daily CRC lab: one useful onchain mission, one companion observation, one capped weekly bento ticket."
         />
-        <CreateTodoForm />
-        <DashboardStats />
-        <Grid layout="dashboard">
-          <GroupedTodoBoard
-            activeFilter={activeFilter}
-            onChangeFilter={setActiveFilter}
-          />
-          <Stack gap="l">
-            <RecentActivity />
+        {AsyncResult
+          .builder(result)
+          .onInitial(() => (
             <Card tone="subtle">
-              <Stack gap="s">
-                <Text>
-                  This sample intentionally goes beyond flat CRUD.
-                </Text>
-                <Text tone="muted">
-                  It demonstrates server-derived dashboard snapshots, SSR
-                  hydration of multiple read models, and disciplined UI
-                  composition through the current design system.
-                </Text>
-              </Stack>
+              <Text tone="muted">
+                Booting Farcaster lab console…
+              </Text>
             </Card>
-          </Stack>
-        </Grid>
+          ))
+          .onFailure(() => (
+            <Card tone="danger">
+              <Text tone="danger">
+                Lab snapshot unavailable. Check the RPC console and retry.
+              </Text>
+            </Card>
+          ))
+          .onSuccess((snapshot) => <LabConsole snapshot={snapshot} />)
+          .render()}
       </Stack>
       <Footer />
     </Page>

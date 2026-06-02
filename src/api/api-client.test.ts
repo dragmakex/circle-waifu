@@ -1,7 +1,7 @@
 import { expect, it } from "@effect/vitest"
+import { Stream } from "effect"
 import * as EffectArray from "effect/Array"
 import * as Effect from "effect/Effect"
-import * as Stream from "effect/Stream"
 import { addRpcErrorLogging, getBaseUrl } from "./api-client"
 
 /**
