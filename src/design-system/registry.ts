@@ -29,6 +29,8 @@ export const registry = {
       "Flex-grow child — enables fluid layouts inside Inline/Stack",
     "primitives/Surface.tsx":
       "Semantic background/border/shadow — visual tone system",
+    "primitives/Stage.tsx":
+      "Tamagotchi-style stage — center sprite slot with corner pills and a bottom action dock, mobile-collapsible",
   },
 
   components: {
@@ -56,6 +58,12 @@ export const registry = {
       "State pattern — required for every data surface",
     "components/ErrorState.tsx":
       "State pattern — required for every data surface",
+    "components/WaifuSprite.tsx":
+      "Animated pixel sprite — mood-driven 4-frame sheet with crisp pixel rendering",
+    "components/MoodMeter.tsx":
+      "Segmented progress bar — semantic mood/care indicator with min/max contract",
+    "components/CosmeticSlot.tsx":
+      "Labeled equipped-cosmetic chip — single-slot pattern with tone variants",
   },
 } as const
 

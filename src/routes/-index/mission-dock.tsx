@@ -15,7 +15,7 @@ import { useAtomSet } from "@effect/atom-react"
 import { useState } from "react"
 import { shareResultAtom, startMissionAtom, verifyMissionAtom } from "./atoms"
 
-type MissionCardProps = {
+type MissionDockProps = {
   readonly mission: DailyMission
   readonly share: ShareResult
 }
@@ -24,14 +24,18 @@ const fallbackTransactionHash =
   "0x00000000000000000000000000000000000000000000000000000000c1rc1e" as TransactionHash
 
 /**
- * Renders the current daily mission and verification controls.
+ * Bottom-dock mission control panel.
+ *
+ * Shows today's hypothesis, the chain action, a transaction-hash input, and
+ * the three action buttons (prepare, verify, share). Designed to sit under
+ * the waifu stage on mobile and span the dock slot on desktop.
  *
  * @param props - Component props.
  * @param props.mission - Daily mission read model.
  * @param props.share - Share card metadata.
- * @returns Mission detail card.
+ * @returns Mission action dock.
  */
-export function MissionCard({ mission, share }: MissionCardProps) {
+export function MissionDock({ mission, share }: MissionDockProps) {
   const startMission = useAtomSet(startMissionAtom)
   const verifyMission = useAtomSet(verifyMissionAtom)
   const shareResult = useAtomSet(shareResultAtom)
@@ -44,8 +48,8 @@ export function MissionCard({ mission, share }: MissionCardProps) {
   const handleVerify = () => {
     verifyMission({
       missionId: mission.id,
-      transactionHash:
-        (transactionHash || fallbackTransactionHash) as TransactionHash,
+      transactionHash: (transactionHash
+        || fallbackTransactionHash) as TransactionHash,
     })
   }
 
@@ -72,9 +76,6 @@ export function MissionCard({ mission, share }: MissionCardProps) {
         <Text>
           {mission.hypothesis}
         </Text>
-        <Text tone="muted">
-          {mission.reason}
-        </Text>
         <Stack gap="2xs">
           <Text tone="label">
             CHAIN ACTION
@@ -83,10 +84,8 @@ export function MissionCard({ mission, share }: MissionCardProps) {
             {mission.action.label}
           </Text>
           <Text tone="caption">
-            {mission.action.chainName} · {mission.costLabel}
-          </Text>
-          <Text tone="caption">
-            {mission.riskLabel}
+            {mission.action.chainName} · {mission.costLabel} · {mission
+              .riskLabel}
           </Text>
         </Stack>
         <TextField
@@ -98,17 +97,17 @@ export function MissionCard({ mission, share }: MissionCardProps) {
         />
         <Inline wrap>
           <Button onClick={handlePrepare} variant="secondary">
-            Prepare action
+            Prepare
           </Button>
           <Button onClick={handleVerify}>
             Verify mission
           </Button>
           <Button onClick={handleShare} variant="ghost">
-            Share result
+            Share
           </Button>
         </Inline>
         <Text tone="caption">
-          Share card: {share.title} · {share.castText}
+          Share card: {share.title}
         </Text>
       </Stack>
     </Card>
