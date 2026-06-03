@@ -1,41 +1,180 @@
+@import url("https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=Press+Start+2P&family=IBM+Plex+Mono:wght@400;500;600&display=swap");
 @import "tailwindcss";
 
+/* ============================================================================
+   CIRCLE WAIFU — CORE DESIGN TOKENS
+   ----------------------------------------------------------------------------
+   Cascade-level cw tokens drive both themes. The @theme block below maps
+   Tailwind utility names to those tokens so design-system components can use
+   bg-*, text-*, border-*, font-*, spacing-* utilities. Route code never
+   touches Tailwind directly — it composes typed DS components.
+   ========================================================================== */
+
+:root,
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --cw-ink-900: #05060c;
+  --cw-ink-800: #0a0c16;
+  --cw-ink-700: #10131f;
+  --cw-ink-600: #171b2b;
+  --cw-line: #232a40;
+  --cw-line-bright: #324063;
+
+  --cw-phosphor: #45e0ff;
+  --cw-phosphor-hi: #aef4ff;
+  --cw-phosphor-dim: #2b8aa3;
+  --cw-phosphor-deep: #12414f;
+
+  --cw-accent: #ff4d9d;
+  --cw-accent-hi: #ff8fc2;
+  --cw-accent-dim: #a3306a;
+
+  --cw-success: #57f2a3;
+  --cw-warning: #ffc24d;
+  --cw-danger: #ff5d6c;
+
+  --cw-text: #dff3ff;
+  --cw-text-dim: #8fa6bd;
+  --cw-text-mut: #5d6f86;
+  --cw-text-inv: #05060c;
+
+  --cw-glow-phosphor:
+    0 0 6px rgba(69, 224, 255, 0.55), 0 0 18px rgba(69, 224, 255, 0.25);
+  --cw-glow-accent:
+    0 0 6px rgba(255, 77, 157, 0.55), 0 0 20px rgba(255, 77, 157, 0.30);
+  --cw-glow-soft: 0 0 2px rgba(69, 224, 255, 0.40);
+
+  --cw-scanline-opacity: 0.14;
+  --cw-vignette: radial-gradient(
+    120% 110% at 50% 42%,
+    transparent 55%,
+    rgba(0, 0, 0, 0.55) 100%
+  );
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+
+  --cw-ink-900: #efe9da;
+  --cw-ink-800: #f6f1e6;
+  --cw-ink-700: #fbf7ee;
+  --cw-ink-600: #e7e0cf;
+  --cw-line: #d3c9b2;
+  --cw-line-bright: #b9ab8c;
+
+  --cw-phosphor: #0a7d99;
+  --cw-phosphor-hi: #0996b8;
+  --cw-phosphor-dim: #5c8f9c;
+  --cw-phosphor-deep: #b7d4dc;
+
+  --cw-accent: #c81e6e;
+  --cw-accent-hi: #e23d8c;
+  --cw-accent-dim: #e9a9c6;
+
+  --cw-success: #1f9d63;
+  --cw-warning: #b8791a;
+  --cw-danger: #cc3344;
+
+  --cw-text: #1a1813;
+  --cw-text-dim: #5a5446;
+  --cw-text-mut: #8a8170;
+  --cw-text-inv: #f6f1e6;
+
+  --cw-glow-phosphor: 0 0 1px rgba(10, 125, 153, 0.25);
+  --cw-glow-accent: 0 0 1px rgba(200, 30, 110, 0.25);
+  --cw-glow-soft: none;
+
+  --cw-scanline-opacity: 0.05;
+  --cw-vignette: radial-gradient(
+    120% 110% at 50% 42%,
+    transparent 70%,
+    rgba(120, 100, 60, 0.10) 100%
+  );
+}
+
 @theme {
-  --color-bg-canvas: oklch(0.985 0.004 258);
-  --color-bg-surface: oklch(1 0 0);
-  --color-bg-subtle: oklch(0.972 0.006 258);
-  --color-bg-accent: oklch(0.96 0.03 252);
-  --color-bg-danger: oklch(0.975 0.018 20);
-  --color-bg-success: oklch(0.973 0.02 150);
-  --color-text-primary: oklch(0.23 0.02 258);
-  --color-text-secondary: oklch(0.42 0.018 258);
-  --color-text-muted: oklch(0.54 0.014 258);
-  --color-text-on-accent: oklch(0.28 0.04 252);
-  --color-border-default: oklch(0.9 0.008 258);
-  --color-border-strong: oklch(0.82 0.015 258);
-  --color-border-danger: oklch(0.86 0.03 20);
-  --color-accent-solid: oklch(0.56 0.18 252);
-  --color-danger-solid: oklch(0.6 0.22 20);
-  --color-success-solid: oklch(0.62 0.16 150);
-  --color-accent-wash: color-mix(in srgb, oklch(0.56 0.18 252) 18%, white);
-  --color-success-wash: color-mix(in srgb, oklch(0.62 0.16 150) 18%, white);
-  --color-danger-wash: color-mix(in srgb, oklch(0.6 0.22 20) 18%, white);
-  --color-focus-ring: color-mix(in srgb, oklch(0.56 0.18 252) 55%, white);
+  /* Tailwind utility → cw token mapping. These are referenced from inside
+     design-system components only; route code never sees Tailwind classes. */
+  --color-bg-canvas: var(--cw-ink-900);
+  --color-bg-panel: var(--cw-ink-800);
+  --color-bg-raised: var(--cw-ink-700);
+  --color-bg-inset: var(--cw-ink-600);
+  --color-line: var(--cw-line);
+  --color-line-bright: var(--cw-line-bright);
 
-  --spacing-2xs: 0.25rem;
-  --spacing-xs: 0.5rem;
-  --spacing-s: 0.75rem;
-  --spacing-m: 1rem;
-  --spacing-l: 1.5rem;
-  --spacing-xl: 2rem;
-  --spacing-2xl: 3rem;
+  --color-phosphor: var(--cw-phosphor);
+  --color-phosphor-hi: var(--cw-phosphor-hi);
+  --color-phosphor-dim: var(--cw-phosphor-dim);
+  --color-phosphor-deep: var(--cw-phosphor-deep);
 
-  --radius-sm: 0.5rem;
-  --radius-md: 0.875rem;
-  --radius-lg: 1.25rem;
+  --color-accent: var(--cw-accent);
+  --color-accent-hi: var(--cw-accent-hi);
+  --color-accent-dim: var(--cw-accent-dim);
 
-  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
-  --shadow-md: 0 12px 32px rgba(15, 23, 42, 0.08);
+  --color-success: var(--cw-success);
+  --color-warning: var(--cw-warning);
+  --color-danger: var(--cw-danger);
+
+  --color-text: var(--cw-text);
+  --color-text-dim: var(--cw-text-dim);
+  --color-text-mut: var(--cw-text-mut);
+  --color-text-inv: var(--cw-text-inv);
+
+  --color-focus-ring: var(--cw-phosphor);
+
+  /* Legacy aliases so existing DS internals don't break mid-restyle. */
+  --color-bg-surface: var(--cw-ink-800);
+  --color-bg-subtle: var(--cw-ink-700);
+  --color-bg-accent: var(--cw-ink-700);
+  --color-bg-danger: var(--cw-ink-700);
+  --color-bg-success: var(--cw-ink-700);
+  --color-text-primary: var(--cw-text);
+  --color-text-secondary: var(--cw-text-dim);
+  --color-text-muted: var(--cw-text-mut);
+  --color-text-on-accent: var(--cw-text-inv);
+  --color-border-default: var(--cw-line);
+  --color-border-strong: var(--cw-line-bright);
+  --color-border-danger: var(--cw-danger);
+  --color-accent-solid: var(--cw-accent);
+  --color-danger-solid: var(--cw-danger);
+  --color-success-solid: var(--cw-success);
+  --color-accent-wash: color-mix(in srgb, var(--cw-accent) 18%, transparent);
+  --color-success-wash: color-mix(in srgb, var(--cw-success) 18%, transparent);
+  --color-danger-wash: color-mix(in srgb, var(--cw-danger) 18%, transparent);
+
+  --font-pixel: "Silkscreen", "Press Start 2P", monospace;
+  --font-hero: "Press Start 2P", monospace;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", monospace;
+
+  --text-micro: 9px;
+  --text-label: 11px;
+  --text-body: 14px;
+  --text-lead: 16px;
+  --text-h3: 20px;
+  --text-h2: 28px;
+  --text-h1: 40px;
+  --text-mega: 56px;
+
+  --spacing-2xs: 4px;
+  --spacing-xs: 8px;
+  --spacing-s: 12px;
+  --spacing-m: 16px;
+  --spacing-l: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+  --spacing-3xl: 64px;
+
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 8px;
+  --radius-pill: 999px;
+
+  --shadow-sm: 0 0 0 1px var(--cw-line);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
+  --shadow-glow-phosphor: var(--cw-glow-phosphor);
+  --shadow-glow-accent: var(--cw-glow-accent);
+  --shadow-glow-soft: var(--cw-glow-soft);
 
   --animate-waifu-sprite: waifu-sprite 1.2s steps(4) infinite;
 
@@ -47,67 +186,71 @@
       background-position: -100% 0;
     }
   }
-}
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-bg-canvas: oklch(0.2 0.02 258);
-    --color-bg-surface: oklch(0.24 0.02 258);
-    --color-bg-subtle: oklch(0.28 0.02 258);
-    --color-bg-accent: oklch(0.3 0.05 252);
-    --color-bg-danger: oklch(0.28 0.05 20);
-    --color-bg-success: oklch(0.28 0.04 150);
-    --color-text-primary: oklch(0.95 0.01 258);
-    --color-text-secondary: oklch(0.82 0.012 258);
-    --color-text-muted: oklch(0.72 0.012 258);
-    --color-text-on-accent: oklch(0.94 0.02 252);
-    --color-border-default: oklch(0.34 0.015 258);
-    --color-border-strong: oklch(0.45 0.02 258);
-    --color-border-danger: oklch(0.48 0.04 20);
-    --color-accent-solid: oklch(0.68 0.16 252);
-    --color-danger-solid: oklch(0.68 0.18 20);
-    --color-success-solid: oklch(0.7 0.14 150);
-    --color-accent-wash: color-mix(
-      in srgb,
-      oklch(0.68 0.16 252) 18%,
-      transparent
-    );
-    --color-success-wash: color-mix(
-      in srgb,
-      oklch(0.7 0.14 150) 18%,
-      transparent
-    );
-    --color-danger-wash: color-mix(
-      in srgb,
-      oklch(0.68 0.18 20) 18%,
-      transparent
-    );
-    --color-focus-ring: color-mix(
-      in srgb,
-      oklch(0.68 0.16 252) 55%,
-      transparent
-    );
-    --shadow-sm: 0 1px 2px rgba(2, 6, 23, 0.32);
-    --shadow-md: 0 16px 40px rgba(2, 6, 23, 0.34);
+  @keyframes cw-flicker {
+    0%, 96%, 100% {
+      opacity: 1;
+    }
+    97% {
+      opacity: 0.82;
+    }
+    98% {
+      opacity: 0.94;
+    }
+  }
+
+  @keyframes cw-blink {
+    50% {
+      opacity: 0;
+    }
+  }
+
+  @keyframes cw-sweep {
+    0% {
+      top: -30%;
+    }
+    100% {
+      top: 100%;
+    }
+  }
+
+  @keyframes cw-sheet-up {
+    from {
+      transform: translateY(14px);
+      opacity: 0;
+    }
+    to {
+      transform: none;
+      opacity: 1;
+    }
+  }
+
+  @keyframes cw-fade {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
   }
 }
 
 @layer base {
+  html {
+    background: var(--cw-ink-900);
+  }
+
   body {
     margin: 0;
     min-height: 100vh;
-    background: var(--color-bg-canvas);
-    color: var(--color-text-primary);
-    font-family:
-      Inter,
-      ui-sans-serif,
-      system-ui,
-      -apple-system,
-      BlinkMacSystemFont,
-      "Segoe UI",
-      sans-serif;
+    background: var(--cw-ink-900);
+    color: var(--cw-text);
+    font-family: var(--font-mono);
+    font-size: var(--text-body);
+    line-height: 1.55;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
 
   a {
@@ -123,5 +266,10 @@
   body,
   html {
     min-height: 100%;
+  }
+
+  ::selection {
+    background: var(--cw-accent);
+    color: var(--cw-text-inv);
   }
 }

@@ -7,10 +7,21 @@ const moodSheet = {
   undersampled: "/waifu/sleepy.png",
 } as const
 
+const moodFrame = {
+  curious:
+    "border-phosphor-dim [box-shadow:inset_0_0_60px_rgba(0,0,0,.6),var(--cw-glow-phosphor)]",
+  focused:
+    "border-accent [box-shadow:inset_0_0_60px_rgba(0,0,0,.6),var(--cw-glow-accent)]",
+  pleased:
+    "border-success [box-shadow:inset_0_0_60px_rgba(0,0,0,.6),var(--cw-glow-soft)]",
+  undersampled:
+    "border-text-mut [box-shadow:inset_0_0_60px_rgba(0,0,0,.6),var(--cw-glow-soft)] saturate-[.7]",
+} as const
+
 const sizeClass = {
-  m: "w-32 h-32 sm:w-40 sm:h-40",
-  l: "w-40 h-40 sm:w-56 sm:h-56",
-  xl: "w-56 h-56 sm:w-72 sm:h-72",
+  m: "max-w-[10rem]",
+  l: "max-w-[14rem]",
+  xl: "max-w-[18rem] sm:max-w-[22rem]",
 } as const
 
 type WaifuSpriteProps = {
@@ -20,37 +31,44 @@ type WaifuSpriteProps = {
   readonly animated?: boolean | undefined
 }
 
-const baseClass =
-  "block bg-no-repeat [image-rendering:pixelated] [background-size:400%_100%]"
+const frameBase =
+  "relative aspect-[3/4] w-full overflow-hidden rounded-lg border-2 bg-[radial-gradient(80%_60%_at_50%_38%,color-mix(in_oklab,var(--cw-accent)_14%,transparent),transparent_70%),var(--cw-ink-800)]"
+
+const spriteBase =
+  "absolute inset-0 bg-no-repeat [image-rendering:pixelated] [background-size:400%_100%] [background-position:0_0] bg-center"
+
 const animatedClass = "animate-[var(--animate-waifu-sprite)]"
 
 /**
- * Renders the animated pixel waifu sprite for the current mood.
+ * Renders the animated pixel waifu inside a 3:4 mood-framed CRT viewport.
  *
- * Uses a 4-frame 128x32 sprite sheet rendered with `image-rendering: pixelated`
- * and a CSS `steps(4)` keyframe so the sprite scales crisply on any device.
+ * The frame border + glow shift with `mood` so the user feels the waifu's
+ * state before reading any label. The sprite itself remains a 4-frame
+ * 128x32 sheet rendered with `image-rendering: pixelated` and animated via
+ * a CSS `steps(4)` keyframe for crisp playback.
  *
  * @param props - Component props.
- * @param props.mood - Current waifu mood, selects which sprite sheet to load.
+ * @param props.mood - Current waifu mood; drives frame tint + sheet.
  * @param props.name - Accessible label for the sprite image.
- * @param props.size - Sprite size token (defaults to `l`).
+ * @param props.size - Sprite container size token (defaults to `l`).
  * @param props.animated - Whether to run the blink/idle animation.
- * @returns The waifu sprite element.
+ * @returns The waifu viewport element.
  */
 export function WaifuSprite(
   { animated = true, mood, name, size = "l" }: WaifuSpriteProps,
 ) {
   const sheet = moodSheet[mood]
   return (
-    <span
+    <div
       role="img"
       aria-label={`${name} (${mood})`}
-      className={cx(
-        baseClass,
-        sizeClass[size],
-        animated ? animatedClass : "",
-      )}
-      style={{ backgroundImage: `url(${sheet})` }}
-    />
+      className={cx(frameBase, moodFrame[mood], sizeClass[size])}
+    >
+      <span
+        aria-hidden="true"
+        className={cx(spriteBase, animated ? animatedClass : "")}
+        style={{ backgroundImage: `url(${sheet})` }}
+      />
+    </div>
   )
 }

@@ -1,10 +1,8 @@
 import type { UserProfile, WaifuState } from "@/api/circle-waifu-schema"
-import { Badge } from "@/design-system/components/Badge"
 import { Heading } from "@/design-system/components/Heading"
 import { MoodMeter } from "@/design-system/components/MoodMeter"
 import { Text } from "@/design-system/components/Text"
 import { WaifuSprite } from "@/design-system/components/WaifuSprite"
-import { Inline } from "@/design-system/primitives/Inline"
 import { Stack } from "@/design-system/primitives/Stack"
 
 type WaifuCenterProps = {
@@ -13,14 +11,14 @@ type WaifuCenterProps = {
 }
 
 const moodTone = {
-  curious: "accent",
+  curious: "neutral",
   focused: "accent",
   pleased: "success",
   undersampled: "neutral",
 } as const
 
 /**
- * Center stage piece: animated pixel sprite, name, greeting and mood meter.
+ * Center stage piece: 3:4 mood-framed pixel sprite + greeting + mood meter.
  *
  * @param props - Component props.
  * @param props.user - Bound Farcaster user identity.
@@ -29,29 +27,18 @@ const moodTone = {
  */
 export function WaifuCenter({ user, waifu }: WaifuCenterProps) {
   return (
-    <Stack align="center" gap="s">
+    <Stack align="center" gap="m">
       <WaifuSprite mood={waifu.mood} name={waifu.name} size="xl" />
       <Stack align="center" gap="2xs">
-        <Heading as="h2" tone="section">
+        <Heading as="h2" tone="display">
           {waifu.name}
         </Heading>
         <Text align="center" tone="muted">
           {`Greetings, ${user.displayName}. Hypothesis engine online.`}
         </Text>
       </Stack>
-      <Inline wrap>
-        <Badge tone="accent">
-          LVL {waifu.level}
-        </Badge>
-        <Badge tone="neutral">
-          XP {waifu.xp}/{waifu.nextLevelXp}
-        </Badge>
-        <Badge tone={moodTone[waifu.mood]}>
-          {waifu.mood}
-        </Badge>
-      </Inline>
       <MoodMeter
-        label="MOOD"
+        label={`MOOD · ${waifu.mood.toUpperCase()}`}
         value={waifu.xp}
         max={waifu.nextLevelXp}
         tone={moodTone[waifu.mood]}

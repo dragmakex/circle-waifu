@@ -2,10 +2,14 @@ import { cx } from "@/design-system/foundation/classes"
 import * as Array from "effect/Array"
 
 const toneClass = {
-  accent: "bg-accent-solid",
-  success: "bg-success-solid",
-  danger: "bg-danger-solid",
-  neutral: "bg-border-strong",
+  accent:
+    "bg-[repeating-linear-gradient(90deg,var(--cw-accent)_0_6px,var(--cw-accent-dim)_6px_8px)]",
+  success:
+    "bg-[repeating-linear-gradient(90deg,var(--cw-success)_0_6px,var(--cw-phosphor-dim)_6px_8px)]",
+  danger:
+    "bg-[repeating-linear-gradient(90deg,var(--cw-danger)_0_6px,var(--cw-accent-dim)_6px_8px)]",
+  neutral:
+    "bg-[repeating-linear-gradient(90deg,var(--cw-phosphor)_0_6px,var(--cw-phosphor-dim)_6px_8px)]",
 } as const
 
 type MoodMeterProps = {
@@ -21,7 +25,8 @@ type MoodMeterProps = {
  *
  * Values outside `[0, max]` are clamped. The bar renders `segments` discrete
  * cells (default 8) so it feels like a tamagotchi care meter rather than a
- * continuous progress bar.
+ * continuous progress bar. Each filled cell uses a dithered phosphor/accent
+ * stripe so it reads as a refreshing CRT display.
  *
  * @param props - Component props.
  * @param props.label - Short label rendered above the bar.
@@ -32,7 +37,7 @@ type MoodMeterProps = {
  * @returns A segmented progress indicator.
  */
 export function MoodMeter(
-  { label, max, segments = 8, tone = "accent", value }: MoodMeterProps,
+  { label, max, segments = 8, tone = "neutral", value }: MoodMeterProps,
 ) {
   const ratio = max <= 0 ? 0 : Math.max(0, Math.min(1, value / max))
   const filled = Math.round(ratio * segments)
@@ -45,7 +50,7 @@ export function MoodMeter(
       aria-valuemin={0}
       aria-valuemax={max}
     >
-      <span className="font-mono text-[0.7rem] tracking-[0.18em] uppercase text-text-muted">
+      <span className="font-pixel text-micro tracking-[0.12em] uppercase text-text-mut">
         {label}
       </span>
       <div className="flex gap-2xs">
@@ -53,8 +58,10 @@ export function MoodMeter(
           <span
             key={index}
             className={cx(
-              "flex-1 h-2 rounded-sm border border-border-default",
-              index < filled ? toneClass[tone] : "bg-bg-subtle",
+              "flex-1 h-3 rounded-sm border border-line",
+              index < filled
+                ? cx(toneClass[tone], "[box-shadow:var(--cw-glow-soft)]")
+                : "bg-bg-inset",
             )}
           />
         ))}

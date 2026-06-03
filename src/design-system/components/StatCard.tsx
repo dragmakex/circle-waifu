@@ -5,9 +5,9 @@ import { Stack } from "@/design-system/primitives/Stack"
 
 type StatCardProps = {
   readonly label: string
-  readonly value: number
+  readonly value: number | string
   readonly helper?: string | undefined
-  readonly tone?: "default" | "accent" | "danger" | undefined
+  readonly tone?: "default" | "accent" | "danger" | "glow" | undefined
 }
 
 /**
@@ -24,22 +24,20 @@ export function StatCard(
   { helper, label, tone = "default", value }: StatCardProps,
 ) {
   return (
-    <Card tone={tone === "default" ? "default" : tone}>
-      <div className="min-w-0">
-        <Stack gap="2xs">
-          <Text tone="label" as="span">
-            {label}
+    <Card tone={tone}>
+      <Stack gap="2xs">
+        <Text tone="label" as="span">
+          {label}
+        </Text>
+        <Heading as="h3" tone="readout">
+          {value}
+        </Heading>
+        {helper && (
+          <Text tone="micro" as="span">
+            {helper}
           </Text>
-          <Heading as="h3" tone="display">
-            {value}
-          </Heading>
-          {helper && (
-            <Text tone="caption">
-              {helper}
-            </Text>
-          )}
-        </Stack>
-      </div>
+        )}
+      </Stack>
     </Card>
   )
 }

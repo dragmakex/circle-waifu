@@ -31,6 +31,8 @@ export const registry = {
       "Semantic background/border/shadow — visual tone system",
     "primitives/Stage.tsx":
       "Tamagotchi-style stage — center sprite slot with corner pills and a bottom action dock, mobile-collapsible",
+    "primitives/CrtScreen.tsx":
+      "CRT effect wrapper — scanlines + vignette + optional flicker/beam, motion-gated",
   },
 
   components: {
@@ -64,6 +66,18 @@ export const registry = {
       "Segmented progress bar — semantic mood/care indicator with min/max contract",
     "components/CosmeticSlot.tsx":
       "Labeled equipped-cosmetic chip — single-slot pattern with tone variants",
+    "components/Chip.tsx":
+      "HUD chip — glass-blurred floating key/value status read-out around the stage",
+    "components/IconButton.tsx":
+      "Round satellite icon button — accessible 44px hit target with active state",
+    "components/Dock.tsx":
+      "Blurred bottom navigation dock — pixel-labeled tabs with safe-area padding",
+    "components/Sheet.tsx":
+      "Slide-up full-screen sheet — secondary screen pattern with keyboard close",
+    "components/Modal.tsx":
+      "Centered scrim modal — dismiss-on-outside / Escape, scoped to short flows",
+    "components/ThemeToggle.tsx":
+      "Floating theme FAB — toggles data-theme and persists choice locally",
   },
 } as const
 

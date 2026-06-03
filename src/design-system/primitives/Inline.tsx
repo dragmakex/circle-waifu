@@ -5,6 +5,7 @@ import type { ReactNode } from "react"
 const alignClass = {
   center: "items-center",
   start: "items-start",
+  end: "items-center justify-end",
   between: "items-center justify-between",
 } as const
 

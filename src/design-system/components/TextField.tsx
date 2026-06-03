@@ -37,7 +37,7 @@ export function TextField(
       <input
         {...props}
         id={fieldId}
-        className="w-full min-h-11 border border-border-default rounded-md bg-bg-surface text-text-primary px-m box-border focus:outline-2 focus:outline-focus-ring focus:outline-offset-2"
+        className="w-full min-h-11 border-2 border-line-bright rounded-md bg-bg-canvas text-text px-m box-border font-mono text-body focus:outline-none focus:border-phosphor focus:[box-shadow:var(--cw-glow-phosphor)]"
       />
       {(hint || error) && (
         <Inline gap="xs" align="start" wrap>

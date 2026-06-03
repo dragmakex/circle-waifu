@@ -1,10 +1,14 @@
 import type { ReactNode } from "react"
 
 const toneClass = {
-  default: "border border-border-default rounded-lg bg-bg-surface shadow-sm",
-  subtle: "border border-border-default rounded-lg bg-bg-subtle shadow-sm",
-  accent: "border border-accent-wash rounded-lg bg-bg-accent shadow-sm",
-  danger: "border border-border-danger rounded-lg bg-bg-danger shadow-sm",
+  default: "relative bg-bg-panel border border-line rounded-md",
+  subtle:
+    "relative bg-bg-raised border border-line rounded-md shadow-[inset_0_0_0_1px_rgba(255,255,255,.02)]",
+  accent:
+    "relative bg-bg-panel border-2 border-phosphor-dim rounded-md shadow-[var(--cw-glow-phosphor)]",
+  danger: "relative bg-bg-panel border-2 border-danger rounded-md",
+  glow:
+    "relative bg-bg-panel border-2 border-accent-dim rounded-md shadow-[var(--cw-glow-accent)]",
 } as const
 
 type SurfaceProps = {

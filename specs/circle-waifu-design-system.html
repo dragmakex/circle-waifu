@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  data-theme="dark"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>Circle Waifu — Design System</title>
+    <link
+      rel="stylesheet"
+      href="tokens/circle-waifu.css"
+    />
+    <style>
+    /* ---- doc-only chrome (not part of the product DS) ---- */
+    body {
+      background: var(--cw-ink-900);
+    }
+    .doc {
+      max-width: 1080px;
+      margin-inline: auto;
+      padding: var(--cw-s7) var(--cw-s5) 120px;
+    }
+    .doc-top {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--cw-s4);
+      padding: var(--cw-s3) var(--cw-s5);
+      background: color-mix(in oklab, var(--cw-ink-900) 88%, transparent);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--cw-line);
+    }
+    .doc-top .brand {
+      display: flex;
+      align-items: center;
+      gap: var(--cw-s3);
+    }
+    .doc-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 999px;
+      background: var(--cw-accent);
+      box-shadow: var(--cw-glow-accent);
+    }
+    section {
+      margin-top: var(--cw-s8);
+      scroll-margin-top: 80px;
+    }
+    .sec-head {
+      display: flex;
+      align-items: baseline;
+      gap: var(--cw-s3);
+      margin-bottom: var(--cw-s5);
+      border-bottom: 1px dashed var(--cw-line);
+      padding-bottom: var(--cw-s3);
+    }
+    .sec-no {
+      font-family: var(--cw-font-hero);
+      font-size: 14px;
+      color: var(--cw-accent);
+    }
+    h1 {
+      font-family: var(--cw-font-hero);
+      font-size: 30px;
+      color: var(--cw-phosphor);
+      text-shadow: var(--cw-glow-phosphor);
+      margin: 0 0 var(--cw-s3);
+      line-height: 1.25;
+    }
+    h2 {
+      font-family: var(--cw-font-pixel);
+      font-size: 18px;
+      color: var(--cw-text);
+      letter-spacing: 0.06em;
+      margin: 0;
+    }
+    h3 {
+      font-family: var(--cw-font-pixel);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--cw-text-dim);
+      margin: var(--cw-s5) 0 var(--cw-s3);
+    }
+    p {
+      margin: 0 0 var(--cw-s3);
+      color: var(--cw-text-dim);
+      max-width: 64ch;
+    }
+    code {
+      font-family: var(--cw-font-mono);
+      font-size: 12px;
+      color: var(--cw-phosphor-hi);
+      background: var(--cw-ink-700);
+      padding: 1px 6px;
+      border-radius: var(--cw-r-sm);
+      border: 1px solid var(--cw-line);
+    }
+    .grid {
+      display: grid;
+      gap: var(--cw-s4);
+    }
+    .demo {
+      background: var(--cw-ink-800);
+      border: 1px solid var(--cw-line);
+      border-radius: var(--cw-r-md);
+      padding: var(--cw-s5);
+    }
+    .demo.dark-only {
+      background: var(--cw-ink-900);
+    }
+    .swatch {
+      border-radius: var(--cw-r-md);
+      overflow: hidden;
+      border: 1px solid var(--cw-line);
+    }
+    .swatch .chip {
+      height: 64px;
+    }
+    .swatch .meta {
+      padding: 8px 10px;
+      background: var(--cw-ink-700);
+    }
+    .swatch .meta b {
+      display: block;
+      font-family: var(--cw-font-mono);
+      font-size: 12px;
+      color: var(--cw-text);
+    }
+    .swatch .meta span {
+      font-family: var(--cw-font-mono);
+      font-size: 11px;
+      color: var(--cw-text-mut);
+    }
+    .toc {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .toc a {
+      text-decoration: none;
+    }
+    .anno {
+      font-family: var(--cw-font-mono);
+      font-size: 12px;
+      color: var(--cw-text-mut);
+      border-left: 2px solid var(--cw-phosphor-dim);
+      padding-left: 10px;
+      margin-top: var(--cw-s3);
+    }
+    .seg-label {
+      font-family: var(--cw-font-pixel);
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--cw-text-mut);
+      margin-bottom: 6px;
+    }
+    .toggle {
+      display: inline-flex;
+      border: 2px solid var(--cw-line-bright);
+      border-radius: var(--cw-r-md);
+      overflow: hidden;
+    }
+    .toggle button {
+      font-family: var(--cw-font-pixel);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      padding: 8px 12px;
+      background: transparent;
+      color: var(--cw-text-dim);
+      border: 0;
+      cursor: pointer;
+      text-transform: uppercase;
+    }
+    .toggle button[aria-pressed="true"] {
+      background: var(--cw-phosphor);
+      color: var(--cw-text-inv);
+    }
+    .specrow {
+      display: grid;
+      grid-template-columns: 160px 1fr;
+      gap: var(--cw-s3);
+      padding: 8px 0;
+      border-bottom: 1px dashed var(--cw-line);
+      align-items: center;
+    }
+    .specrow b {
+      font-family: var(--cw-font-mono);
+      font-size: 13px;
+      color: var(--cw-text);
+    }
+    .anatomy {
+      position: relative;
+      border: 2px dashed var(--cw-line-bright);
+      border-radius: var(--cw-r-lg);
+      aspect-ratio: 9/16;
+      max-width: 320px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .anatomy .zone {
+      border: 1px dashed var(--cw-phosphor-dim);
+      border-radius: var(--cw-r-sm);
+      display: grid;
+      place-items: center;
+      text-align: center;
+      color: var(--cw-phosphor);
+      font-family: var(--cw-font-pixel);
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      padding: 6px;
+    }
+    </style>
+  </head>
+  <body>
+    <div class="doc-top">
+      <div class="brand">
+        <div class="doc-dot"></div>
+        <span class="cw-label">CIRCLE WAIFU // DESIGN SYSTEM</span>
+      </div>
+      <div class="cw-row">
+        <span class="cw-micro">THEME</span>
+        <div
+          class="toggle"
+          id="themeToggle"
+        >
+          <button
+            data-theme-set="dark"
+            aria-pressed="true"
+          >
+            Dark CRT
+          </button>
+          <button
+            data-theme-set="light"
+            aria-pressed="false"
+          >
+            Lab Paper
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <main class="doc">
+      <!-- ===== INTRO ===== -->
+      <header>
+        <span class="cw-label cw-label--accent">v0.1 · FOR CLAUDE CODE</span>
+        <h1>Inside the CRT.</h1>
+        <p>
+          Circle Waifu is a Farcaster mini-app: a retro research-lab terminal
+          where an anime companion gives one useful onchain mission per day.
+          This document is the implementable design system — tokens live in
+          <code>tokens/circle-waifu.css</code>, and every screen composes from
+          the <code>.cw-*</code> primitives below. <b>Do not hardcode hex values
+            in route code</b> — reference the tokens.
+        </p>
+        <div class="anno">
+          Visual DNA: full-bleed "inside the screen" immersion (à la sible.ai) ×
+          Tamagotchi companion loop × 80s phosphor terminal. Cyan/electric-blue
+          phosphor signal, hot-magenta waifu accent, medium scanlines, pixel
+          labels over crisp mono body.
+        </div>
+        <div
+          class="toc"
+          style="margin-top: 24px"
+        >
+          <a
+            class="cw-badge cw-badge--verified"
+            href="#color"
+          >01 COLOR</a>
+          <a
+            class="cw-badge cw-badge--verified"
+            href="#type"
+          >02 TYPE</a>
+          <a
+            class="cw-badge cw-badge--verified"
+            href="#space"
+          >03 SPACE</a>
+          <a
+            class="cw-badge cw-badge--verified"
+            href="#crt"
+          >04 CRT FX</a>
+          <a
+            class="cw-badge cw-badge--verified"
+            href="#buttons"
+          >05 BUTTONS</a>
+          <a
+            class="cw-badge cw-badge--verified"
+            href="#hud"
+          >06 HUD</a>
+          <a
+            class="cw-badge cw-badge--verified"
+            href="#meters"
+          >07 METERS</a>
+          <a
+            class="cw-badge cw-badge--verified"
+            href="#panels"
+          >08 PANELS</a>
+          <a
+            class="cw-badge cw-badge--verified"
+            href="#waifu"
+          >09 WAIFU</a>
+          <a
+            class="cw-badge cw-badge--verified"
+            href="#cosmetics"
+          >10 COSMETICS</a>
+          <a
+            class="cw-badge cw-badge--verified"
+            href="#layout"
+          >11 LAYOUT</a>
+          <a
+            class="cw-badge cw-badge--verified"
+            href="#voice"
+          >12 VOICE</a>
+        </div>
+      </header>
+
+      <!-- ===== 01 COLOR ===== -->
+      <section id="color">
+        <div class="sec-head">
+          <span class="sec-no">01</span>
+          <h2>Color Tokens</h2>
+        </div>
+        <p>
+          Two themes ship from day one: <code>data-theme="dark"</code> (default,
+          immersive CRT ink) and <code>data-theme="light"</code> (warm
+          lab-paper). Phosphor darkens to deep teal on light paper so it stays
+          legible. Toggle the theme top-right to preview both.
+        </p>
+
+        <h3>Canvas &amp; surfaces</h3>
+        <div
+          class="grid"
+          style="grid-template-columns: repeat(auto-fill, minmax(150px, 1fr))"
+        >
+          <div class="swatch">
+            <div
+              class="chip"
+              style="background: var(--cw-ink-900)"
+            >
+            </div>
+            <div class="meta">
+              <b>ink-900</b>
+              <span>--cw-ink-900 · canvas</span>
+            </div>
+          </div>
+          <div class="swatch">
+            <div
+              class="chip"
+              style="background: var(--cw-ink-800)"
+            >
+            </div>
+            <div class="meta">
+              <b>ink-800</b>
+              <span>--cw-ink-800 · panel</span>
+            </div>
+          </div>
+          <div class="swatch">
+            <div
+              class="chip"
+              style="background: var(--cw-ink-700)"
+            >
+            </div>
+            <div class="meta">
+              <b>ink-700</b>
+              <span>--cw-ink-700 · raised</span>
+            </div>
+          </div>
+          <div class="swatch">
+            <div
+              class="chip"
+              style="background: var(--cw-ink-600)"
+            >
+            </div>
+            <div class="meta">
+              <b>ink-600</b>
+              <span>--cw-ink-600 · inset</span>
+            </div>
+          </div>
+          <div class="swatch">
+            <div
+              class="chip"
+              style="background: var(--cw-line)"
+            >
+            </div>
+            <div class="meta">
+              <b>line</b>
+              <span>--cw-line · hairline</span>
+            </div>
+          </div>
+        </div>
+
+        <h3>Phosphor — primary signal</h3>
+        <div
+          class="grid"
+          style="grid-template-columns: repeat(auto-fill, minmax(150px, 1fr))"
+        >
+          <div class="swatch">
+            <div
+              class="chip"
+              style="background: var(--cw-phosphor)"
+            >
+            </div>
+            <div class="meta">
+              <b>phosphor</b>
+              <span>--cw-phosphor</span>
+            </div>
+          </div>
+          <div class="swatch">
+            <div
+              class="chip"
+              style="background: var(--cw-phosphor-hi)"
+            >
+            </div>
+            <div class="meta">
+              <b>phosphor-hi</b>
+              <span>--cw-phosphor-hi</span>
+            </div>
+          </div>
+          <div class="swatch">
+            <div
+              class="chip"
+              style="background: var(--cw-phosphor-dim)"
+            >
+            </div>
+            <div class="meta">
+              <b>phosphor-dim</b>
+              <span>--cw-phosphor-dim</span>
+            </div>
+          </div>
+          <div class="swatch">
+            <div
+              class="chip"
+              style="background: var(--cw-phosphor-deep)"
+            >
+            </div>
+            <div class="meta">
+              <b>phosphor-deep</b>
+              <span>--cw-phosphor-deep</span>
+            </div>
+          </div>
+        </div>
+
+        <h3>Accent (waifu-coded) &amp; status</h3>
+        <div
+          class="grid"
+          style="grid-template-columns: repeat(auto-fill, minmax(150px, 1fr))"
+        >
+          <div class="swatch">
+            <div
+              class="chip"
+              style="background: var(--cw-accent)"
+            >
+            </div>
+            <div class="meta">
+              <b>accent</b>
+              <span>--cw-accent · magenta</span>
+            </div>
+          </div>
+          <div class="swatch">
+            <div
+              class="chip"
+              style="background: var(--cw-accent-hi)"
+            >
+            </div>
+            <div class="meta">
+              <b>accent-hi</b>
+              <span>--cw-accent-hi</span>
+            </div>
+          </div>
+          <div class="swatch">
+            <div
+              class="chip"
+              style="background: var(--cw-success)"
+            >
+            </div>
+            <div class="meta">
+              <b>success</b>
+              <span>--cw-success · lab green</span>
+            </div>
+          </div>
+          <div class="swatch">
+            <div
+              class="chip"
+              style="background: var(--cw-warning)"
+            >
+            </div>
+            <div class="meta">
+              <b>warning</b>
+              <span>--cw-warning · streak amber</span>
+            </div>
+          </div>
+          <div class="swatch">
+            <div
+              class="chip"
+              style="background: var(--cw-danger)"
+            >
+            </div>
+            <div class="meta">
+              <b>danger</b>
+              <span>--cw-danger · alert</span>
+            </div>
+          </div>
+        </div>
+        <div class="anno">
+          Usage rule: phosphor = system/onchain signal &amp; navigation. Accent
+          magenta = the waifu, primary CTAs, and "her" moments only — keep it
+          scarce so it stays special. Warning amber is reserved for streak/time
+          pressure. Green = verified onchain.
+        </div>
+      </section>
+
+      <!-- ===== 02 TYPE ===== -->
+      <section id="type">
+        <div class="sec-head">
+          <span class="sec-no">02</span>
+          <h2>Typography</h2>
+        </div>
+        <p>
+          Three faces, each with a job. Pixel for short shouty labels, hero
+          pixel for big numerals and splash, mono for everything readable.
+        </p>
+        <div class="demo cw-stack">
+          <div>
+            <div class="seg-label">
+              Press Start 2P — hero numerals / splash · <code
+                
+              >--cw-font-hero</code>
+            </div>
+            <span
+              class="cw-hero"
+              style="font-size: 34px"
+            >DAY 07</span>
+          </div>
+          <hr class="cw-rule" />
+          <div>
+            <div class="seg-label">
+              Silkscreen — labels &amp; stats · <code>--cw-font-pixel</code>
+            </div>
+            <div
+              class="cw-row"
+              style="flex-wrap: wrap; gap: 16px"
+            >
+              <span class="cw-label">TODAY'S HYPOTHESIS</span>
+              <span class="cw-label cw-label--accent">WEEKLY BENTO POOL</span>
+              <span class="cw-label cw-label--dim">STREAK INTEGRITY</span>
+              <span class="cw-micro">OBSERVATION LOG</span>
+            </div>
+          </div>
+          <hr class="cw-rule" />
+          <div>
+            <div class="seg-label">
+              IBM Plex Mono — body &amp; lab notes · <code>--cw-font-mono</code>
+            </div>
+            <p
+              class="cw-note"
+              style="margin: 0"
+            >
+              Hypothesis: one useful CRC action increases network vitality.
+              Observation recorded — streak integrity stable.
+            </p>
+          </div>
+        </div>
+        <h3>Scale</h3>
+        <div class="demo">
+          <div class="specrow">
+            <b>--cw-fs-mega 56</b>
+            <span
+              class="cw-hero"
+              style="font-size: var(--cw-fs-mega)"
+            >42</span>
+          </div>
+          <div class="specrow">
+            <b>--cw-fs-h1 40</b>
+            <span
+              class="cw-hero"
+              style="font-size: var(--cw-fs-h1)"
+            >CIRCLE</span>
+          </div>
+          <div class="specrow">
+            <b>--cw-fs-h2 28</b>
+            <span class="cw-readout">1,240 CRC</span>
+          </div>
+          <div class="specrow">
+            <b>--cw-fs-h3 20</b>
+            <span
+              style="font-family: var(--cw-font-mono); font-size: var(--cw-fs-h3); color: var(--cw-text)"
+            >Mission detail</span>
+          </div>
+          <div class="specrow">
+            <b>--cw-fs-body 14</b>
+            <span
+              class="cw-body"
+              style="font-size: var(--cw-fs-body)"
+            >Body copy &amp; lab notes</span>
+          </div>
+          <div class="specrow">
+            <b>--cw-fs-label 11</b>
+            <span class="cw-label">CHAIN ACTION</span>
+          </div>
+          <div
+            class="specrow"
+            style="border: 0"
+          >
+            <b>--cw-fs-micro 9</b>
+            <span class="cw-micro">VERIFIED ONCHAIN</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 03 SPACE ===== -->
+      <section id="space">
+        <div class="sec-head">
+          <span class="sec-no">03</span>
+          <h2>Spacing, Radii &amp; Elevation</h2>
+        </div>
+        <p>
+          4px base grid. Radii stay hardware-edged (2–8px); the only pill is the
+          dock/icon button. Elevation is glow, not drop-shadow — the screen
+          emits light, it doesn't float.
+        </p>
+        <h3>Spacing scale</h3>
+        <div
+          class="demo cw-row"
+          style="flex-wrap: wrap; align-items: flex-end; gap: 16px"
+        >
+          <div>
+            <div class="seg-label">s1·4</div>
+            <div style="width: 4px; height: 4px; background: var(--cw-phosphor)">
+            </div>
+          </div>
+          <div>
+            <div class="seg-label">s2·8</div>
+            <div style="width: 8px; height: 8px; background: var(--cw-phosphor)">
+            </div>
+          </div>
+          <div>
+            <div class="seg-label">s3·12</div>
+            <div style="width: 12px; height: 12px; background: var(--cw-phosphor)">
+            </div>
+          </div>
+          <div>
+            <div class="seg-label">s4·16</div>
+            <div style="width: 16px; height: 16px; background: var(--cw-phosphor)">
+            </div>
+          </div>
+          <div>
+            <div class="seg-label">s5·24</div>
+            <div style="width: 24px; height: 24px; background: var(--cw-phosphor)">
+            </div>
+          </div>
+          <div>
+            <div class="seg-label">s6·32</div>
+            <div style="width: 32px; height: 32px; background: var(--cw-phosphor)">
+            </div>
+          </div>
+          <div>
+            <div class="seg-label">s7·48</div>
+            <div style="width: 48px; height: 48px; background: var(--cw-phosphor)">
+            </div>
+          </div>
+          <div>
+            <div class="seg-label">s8·64</div>
+            <div style="width: 64px; height: 64px; background: var(--cw-phosphor)">
+            </div>
+          </div>
+        </div>
+        <h3>Radii &amp; glow</h3>
+        <div
+          class="demo cw-row"
+          style="gap: 24px; flex-wrap: wrap"
+        >
+          <div class="cw-center cw-col">
+            <div style="width: 64px; height: 48px; background: var(--cw-ink-700); border: 1px solid var(--cw-line); border-radius: var(--cw-r-sm)">
+            </div>
+            <span class="cw-micro">r-sm 2</span>
+          </div>
+          <div class="cw-center cw-col">
+            <div style="width: 64px; height: 48px; background: var(--cw-ink-700); border: 1px solid var(--cw-line); border-radius: var(--cw-r-md)">
+            </div>
+            <span class="cw-micro">r-md 4</span>
+          </div>
+          <div class="cw-center cw-col">
+            <div style="width: 64px; height: 48px; background: var(--cw-ink-700); border: 1px solid var(--cw-line); border-radius: var(--cw-r-lg)">
+            </div>
+            <span class="cw-micro">r-lg 8</span>
+          </div>
+          <div class="cw-center cw-col">
+            <div style="width: 64px; height: 48px; background: var(--cw-ink-700); border: 1px solid var(--cw-phosphor-dim); border-radius: var(--cw-r-md); box-shadow: var(--cw-glow-phosphor)">
+            </div>
+            <span class="cw-micro">glow-phosphor</span>
+          </div>
+          <div class="cw-center cw-col">
+            <div style="width: 64px; height: 48px; background: var(--cw-ink-700); border: 1px solid var(--cw-accent-dim); border-radius: var(--cw-r-md); box-shadow: var(--cw-glow-accent)">
+            </div>
+            <span class="cw-micro">glow-accent</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 04 CRT FX ===== -->
+      <section id="crt">
+        <div class="sec-head">
+          <span class="sec-no">04</span>
+          <h2>CRT Effect Layers</h2>
+        </div>
+        <p>
+          Wrap any full-bleed container in <code>.cw-crt</code>. It paints
+          scanlines (<code>::before</code>) and a vignette + phosphor wash
+          (<code>::after</code>); children auto-lift above the texture. Medium
+          intensity by default — readable, not nauseating. Add <code
+            
+          >.cw-crt--flicker</code> for a gentle flicker and a <code
+            
+          >.cw-scanbeam</code> child for a sweeping beam (both auto-disable
+          under <code>prefers-reduced-motion</code>).
+        </p>
+        <div
+          class="demo dark-only cw-crt cw-crt--flicker"
+          style="border-radius: var(--cw-r-lg); min-height: 200px; display: grid; place-items: center"
+        >
+          <div class="cw-scanbeam"></div>
+          <div
+            class="cw-center cw-col"
+            style="text-align: center; gap: 10px"
+          >
+            <span
+              class="cw-hero"
+              style="font-size: 28px"
+            >SYSTEM ONLINE</span>
+            <span class="cw-label"
+            >PHOSPHOR · SCANLINES · VIGNETTE · FLICKER</span>
+            <span class="cw-body cw-cursor">awaiting field experiment</span>
+          </div>
+        </div>
+        <div class="anno">
+          Scanline opacity is tokenized (<code>--cw-scanline-opacity</code>: .14
+          dark / .05 light) so the texture lightens automatically per theme.
+          Never apply CRT FX to dense text blocks like the activity log — keep
+          it on the stage, dock, and waifu viewport.
+        </div>
+      </section>
+
+      <!-- ===== 05 BUTTONS ===== -->
+      <section id="buttons">
+        <div class="sec-head">
+          <span class="sec-no">05</span>
+          <h2>Buttons</h2>
+        </div>
+        <p>
+          All buttons are pixel-labelled, ≥44px tall, with snappy press states.
+          Hierarchy: <code>--primary</code> (magenta, the day's CTA — one per
+          screen), <code>--phosphor</code> (system actions), default (neutral),
+          <code>--ghost</code> (tertiary).
+        </p>
+        <div
+          class="demo cw-row"
+          style="flex-wrap: wrap; gap: 14px"
+        >
+          <button class="cw-btn cw-btn--primary">RUN EXPERIMENT</button>
+          <button class="cw-btn cw-btn--phosphor">VERIFY ONCHAIN</button>
+          <button class="cw-btn">SHARE CAST</button>
+          <button class="cw-btn cw-btn--ghost">SKIP</button>
+          <button
+            class="cw-btn"
+            disabled
+          >
+            LOCKED
+          </button>
+        </div>
+        <h3>Satellite icon buttons (float around the waifu / dock)</h3>
+        <div
+          class="demo cw-row"
+          style="gap: 18px"
+        >
+          <button
+            class="cw-iconbtn"
+            data-active="true"
+            aria-label="Home"
+          >
+            ⌂
+          </button>
+          <button
+            class="cw-iconbtn"
+            aria-label="Pool"
+          >
+            ◈
+          </button>
+          <button
+            class="cw-iconbtn"
+            aria-label="Profile"
+          >
+            ☻
+          </button>
+          <button
+            class="cw-iconbtn"
+            aria-label="Log"
+          >
+            ≣
+          </button>
+        </div>
+        <div class="anno">
+          Icons shown as glyph placeholders. Production: swap for a pixel icon
+          set (16×16, 2px stroke) — keep stroke weight equal to the pixel grid
+          so they read as part of the terminal.
+        </div>
+      </section>
+
+      <!-- ===== 06 HUD ===== -->
+      <section id="hud">
+        <div class="sec-head">
+          <span class="sec-no">06</span>
+          <h2>HUD Chips</h2>
+        </div>
+        <p>
+          Floating, glass-blurred status read-outs that orbit the waifu on the
+          home stage. Key + value, pixel type. They never block her face — pin
+          to corners.
+        </p>
+        <div
+          class="demo dark-only cw-row"
+          style="flex-wrap: wrap; gap: 12px"
+        >
+          <span class="cw-chip cw-chip--streak"><span class="cw-chip-k"
+            >STREAK</span><span class="cw-chip-v">07d</span></span>
+          <span class="cw-chip"><span class="cw-chip-k">TICKETS</span><span
+              class="cw-chip-v"
+            >3/7</span></span>
+          <span class="cw-chip cw-chip--accent"><span class="cw-chip-k"
+            >LV</span><span class="cw-chip-v">12</span></span>
+          <span class="cw-chip"><span class="cw-chip-k">POOL</span><span
+              class="cw-chip-v"
+            >1,240 CRC</span></span>
+        </div>
+        <h3>Status badges</h3>
+        <div
+          class="demo cw-row"
+          style="flex-wrap: wrap; gap: 12px"
+        >
+          <span class="cw-badge cw-badge--verified">VERIFIED</span>
+          <span class="cw-badge cw-badge--pending">PENDING</span>
+          <span class="cw-badge cw-badge--failed">FAILED</span>
+          <span class="cw-badge cw-badge--locked">LOCKED</span>
+        </div>
+      </section>
+
+      <!-- ===== 07 METERS ===== -->
+      <section id="meters">
+        <div class="sec-head">
+          <span class="sec-no">07</span>
+          <h2>Meters, XP &amp; Streak</h2>
+        </div>
+        <p>
+          Progress fills are dithered (repeating stripes) and animate with a
+          stepped easing so they feel like a refreshing display, not a smooth
+          web bar.
+        </p>
+        <div
+          class="demo cw-stack"
+          style="gap: 18px"
+        >
+          <div>
+            <div class="seg-label">XP TO NEXT LEVEL · .cw-meter--xp</div>
+            <div class="cw-meter cw-meter--xp"><i style="width: 64%"></i></div>
+          </div>
+          <div>
+            <div class="seg-label">POOL FILL · .cw-meter</div>
+            <div class="cw-meter"><i style="width: 38%"></i></div>
+          </div>
+          <div>
+            <div class="seg-label">WEEKLY STREAK · .cw-segs (7 day)</div>
+            <div class="cw-segs">
+              <i data-on="true"></i>
+              <i data-on="true"></i>
+              <i data-on="true"></i>
+              <i data-on="true"></i>
+              <i data-on="true"></i>
+              <i data-on="true"></i>
+              <i data-on="true"></i>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 08 PANELS ===== -->
+      <section id="panels">
+        <div class="sec-head">
+          <span class="sec-no">08</span>
+          <h2>Panels &amp; Cards</h2>
+        </div>
+        <p>
+          Panels are the workhorse container. Add <code>.cw-bracket</code> for
+          ASCII corner-brackets, <code>--glow</code> for an active/important
+          panel, a <code>.cw-panel-head</code> strip for titled sections.
+        </p>
+        <div
+          class="grid"
+          style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr))"
+        >
+          <div class="cw-panel cw-bracket">
+            <div class="cw-panel-head">
+              <span class="cw-label">TODAY'S HYPOTHESIS</span>
+              <span class="cw-badge cw-badge--pending">PENDING</span>
+            </div>
+            <p
+              class="cw-note"
+              style="margin: 0 0 12px"
+            >
+              Contribute a small capped CRC amount to this week's pool. We'll
+              confirm it onchain.
+            </p>
+            <div class="cw-row">
+              <span class="cw-micro">EST. COST</span>
+              <span class="cw-label cw-label--accent">5 CRC</span>
+            </div>
+          </div>
+          <div class="cw-panel cw-panel--glow">
+            <div class="cw-panel-head">
+              <span class="cw-label">WEEKLY BENTO POOL</span>
+              <span class="cw-micro">DRAW IN 2D 4H</span>
+            </div>
+            <span class="cw-readout">1,240 CRC</span>
+            <div
+              class="cw-meter"
+              style="margin-top: 12px"
+            >
+              <i style="width: 38%"></i>
+            </div>
+          </div>
+          <div class="cw-panel cw-panel--raised">
+            <div class="cw-panel-head">
+              <span class="cw-label cw-label--dim">OBSERVATION LOG</span>
+            </div>
+            <p
+              class="cw-note"
+              style="margin: 0"
+            >
+              Probability did not favor us. The lab continues.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 09 WAIFU ===== -->
+      <section id="waifu">
+        <div class="sec-head">
+          <span class="sec-no">09</span>
+          <h2>Waifu Viewport &amp; Moods</h2>
+        </div>
+        <p>
+          The hero element. A 3:4 CRT-framed slot (<code>.cw-waifu</code>) holds
+          a higher-res anime portrait. The frame's <code>data-mood</code> tints
+          the border &amp; glow so her state is felt before it's read. In the
+          prototype this is an <code>&lt;image-slot&gt;</code> you can drop real
+          art into; here it shows the striped placeholder.
+        </p>
+        <div
+          class="grid"
+          style="grid-template-columns: repeat(auto-fit, minmax(150px, 1fr))"
+        >
+          <div>
+            <div class="seg-label">data-mood="hyped"</div>
+            <div
+              class="cw-waifu"
+              data-mood="hyped"
+            >
+              <div class="cw-art-ph">
+                <span class="cw-label cw-label--accent">WAIFU ART</span>
+                <span class="cw-micro">3:4 portrait slot</span>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="seg-label">data-mood="happy"</div>
+            <div
+              class="cw-waifu"
+              data-mood="happy"
+            >
+              <div class="cw-art-ph">
+                <span
+                  class="cw-label"
+                  style="color: var(--cw-success)"
+                >WAIFU ART</span>
+                <span class="cw-micro">drop render</span>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="seg-label">data-mood="neutral"</div>
+            <div
+              class="cw-waifu"
+              data-mood="neutral"
+            >
+              <div class="cw-art-ph">
+                <span class="cw-label">WAIFU ART</span>
+                <span class="cw-micro">drop render</span>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="seg-label">data-mood="sad"</div>
+            <div
+              class="cw-waifu"
+              data-mood="sad"
+            >
+              <div class="cw-art-ph">
+                <span class="cw-label cw-label--dim">WAIFU ART</span>
+                <span class="cw-micro">streak broken</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="anno">
+          Mood mapping → <b>hyped</b>: just verified a mission / won a draw
+          (magenta). <b>happy</b>: streak active (green). <b>neutral</b>: idle,
+          mission pending (cyan). <b>sad</b>: streak broken / missed day
+          (desaturated). The waifu is user-nameable — store the name and render
+          it in the top-left HUD; default placeholder is <code>[WAIFU]</code>.
+        </div>
+      </section>
+
+      <!-- ===== 10 COSMETICS ===== -->
+      <section id="cosmetics">
+        <div class="sec-head">
+          <span class="sec-no">10</span>
+          <h2>Cosmetic / Wardrobe Tiles</h2>
+        </div>
+        <p>
+          Unlockable cosmetics drive retention. Tiles carry one of three states
+          via <code>data-state</code>: <code>equipped</code> (magenta ring),
+          <code>unlocked</code> (selectable), <code>locked</code> (dimmed + lock
+          badge). Group by slot: background, outfit, frame skin, CRT palette.
+        </p>
+        <div
+          class="grid"
+          style="grid-template-columns: repeat(auto-fill, minmax(96px, 1fr))"
+        >
+          <div
+            class="cw-cosmetic"
+            data-state="equipped"
+          >
+            <span
+              class="cw-micro"
+              style="color: var(--cw-accent)"
+            >CYAN CRT</span>
+          </div>
+          <div
+            class="cw-cosmetic"
+            data-state="unlocked"
+          >
+            <span class="cw-micro">LAB COAT</span>
+          </div>
+          <div
+            class="cw-cosmetic"
+            data-state="unlocked"
+          >
+            <span class="cw-micro">AMBER SKIN</span>
+          </div>
+          <div
+            class="cw-cosmetic"
+            data-state="locked"
+          >
+            <span class="cw-micro">NEON HALO</span>
+          </div>
+          <div
+            class="cw-cosmetic"
+            data-state="locked"
+          >
+            <span class="cw-micro">VHS GRAIN</span>
+          </div>
+          <div
+            class="cw-cosmetic"
+            data-state="locked"
+          >
+            <span class="cw-micro">DAY 30</span>
+          </div>
+        </div>
+        <div class="anno">
+          Unlock conditions surface as the locked tile caption (e.g. "DAY 30",
+          "WIN A DRAW"). Equipping a CRT-palette cosmetic should swap the
+          phosphor token at runtime — design cosmetics as token overrides, not
+          bespoke CSS.
+        </div>
+      </section>
+
+      <!-- ===== 11 LAYOUT ===== -->
+      <section id="layout">
+        <div class="sec-head">
+          <span class="sec-no">11</span>
+          <h2>App Shell &amp; Home Anatomy</h2>
+        </div>
+        <p>
+          Full-bleed, single column, capped at <code>--cw-app-max</code> (480px)
+          for the Farcaster mini-app. No headers, no nav rail — "nothing else
+          anywhere." The waifu owns the stage; HUD chips orbit her; the day's
+          mission card sits over the lower third; a blurred dock anchors
+          navigation + the primary CTA.
+        </p>
+        <div
+          class="cw-row"
+          style="align-items: flex-start; gap: 32px; flex-wrap: wrap"
+        >
+          <div class="anatomy">
+            <div
+              class="zone"
+              style="flex: 0 0 auto"
+            >
+              TOP HUD · name · lv · streak · tickets
+            </div>
+            <div
+              class="zone"
+              style="flex: 1"
+            >
+              WAIFU VIEWPORT (3:4) · floating satellites
+            </div>
+            <div
+              class="zone"
+              style="flex: 0 0 auto"
+            >
+              MISSION CARD · today's hypothesis + CTA
+            </div>
+            <div
+              class="zone"
+              style="flex: 0 0 auto"
+            >
+              DOCK · home · pool · profile · log
+            </div>
+          </div>
+          <div style="flex: 1; min-width: 240px">
+            <div class="specrow">
+              <b>Max width</b>
+              <span class="cw-body">480px · centered · <code
+                  
+                >.cw-app</code></span>
+            </div>
+            <div class="specrow">
+              <b>Dock height</b>
+              <span class="cw-body"
+              >76px · <code>--cw-dock-h</code> · blurred, 2px top border</span>
+            </div>
+            <div class="specrow">
+              <b>HUD gap</b>
+              <span class="cw-body">10px from edges · <code
+                  
+                >--cw-hud-gap</code></span>
+            </div>
+            <div class="specrow">
+              <b>Stage</b>
+              <span class="cw-body"><code>.cw-crt</code> wraps the stage; waifu
+                + chips inside</span>
+            </div>
+            <div
+              class="specrow"
+              style="border: 0"
+            >
+              <b>Safe areas</b>
+              <span class="cw-body"
+              >respect <code>env(safe-area-inset-*)</code> on dock + HUD</span>
+            </div>
+          </div>
+        </div>
+        <div class="anno">
+          Five screens compose from this shell: Home / Lab Console, Mission
+          Detail, Weekly Pool, Waifu Profile, Activity Log. Secondary screens
+          slide up as full-bleed sheets over the same stage so the waifu is
+          never fully lost. See the working prototype for the live composition.
+        </div>
+      </section>
+
+      <!-- ===== 12 VOICE ===== -->
+      <section id="voice">
+        <div class="sec-head">
+          <span class="sec-no">12</span>
+          <h2>Voice, Motion &amp; Rules</h2>
+        </div>
+        <h3>Tone — smart, dry, cute, research-lab coded</h3>
+        <div class="demo cw-stack">
+          <p
+            class="cw-note"
+            style="margin: 0"
+          >
+            Hypothesis: one useful CRC action increases network vitality.
+          </p>
+          <p
+            class="cw-note"
+            style="margin: 0"
+          >
+            Observation recorded. Streak integrity: stable.
+          </p>
+          <p
+            class="cw-note"
+            style="margin: 0"
+          >
+            Your CRC aura is under-sampled. Perform one field experiment.
+          </p>
+          <p
+            class="cw-note"
+            style="margin: 0"
+          >
+            Probability did not favor us. The lab continues.
+          </p>
+        </div>
+        <div class="anno">
+          Never infantilize. Labels are clipped &amp; uppercase (<code>TODAY'S
+            HYPOTHESIS</code>, <code>CHAIN ACTION</code>, <code>STREAK
+            INTEGRITY</code>). Use "weekly prize pool," never casino language.
+          Always show odds, caps and rules plainly.
+        </div>
+        <h3>Motion</h3>
+        <p>
+          Fast &amp; stepped, never bouncy. Transitions <code>--cw-dur</code>
+          220ms on <code>--cw-ease</code>; meters use <code
+            
+          >--cw-ease-step</code> for a refreshing-display feel. Decorative loops
+          (flicker, scanbeam, cursor blink) only — gate everything on <code
+            
+          >prefers-reduced-motion</code>. No infinite animation on content.
+        </p>
+        <h3>Implementation contract for Claude Code</h3>
+        <div class="demo cw-stack">
+          <p style="margin: 0">
+            1 — Import <code>tokens/circle-waifu.css</code> once at the app
+            root; set <code>data-theme</code> on <code>&lt;html&gt;</code>.
+          </p>
+          <p style="margin: 0">
+            2 — Build screens only from <code>.cw-*</code> primitives + tokens.
+            New component? Add it to the token file / DS registry first, then
+            compose.
+          </p>
+          <p style="margin: 0">
+            3 — Never hardcode color/space/type values in route code. Reference
+            <code>var(--cw-*)</code>.
+          </p>
+          <p style="margin: 0">
+            4 — Waifu portrait is a swappable slot; cosmetics are token
+            overrides, not new CSS.
+          </p>
+          <p style="margin: 0">
+            5 — Honor <code>prefers-reduced-motion</code> and <code
+              
+            >env(safe-area-inset-*)</code> everywhere.
+          </p>
+        </div>
+      </section>
+
+      <footer style="margin-top: 80px; border-top: 1px dashed var(--cw-line); padding-top: 24px">
+        <span class="cw-micro"
+        >CIRCLE WAIFU · DESIGN SYSTEM v0.1 · tokens/circle-waifu.css · companion
+          prototype → Circle Waifu — Prototype.html</span>
+      </footer>
+    </main>
+
+    <script>
+    const root = document.documentElement
+      document.getElementById("themeToggle").addEventListener(
+        "click",
+        (e) => {
+          const btn = e.target.closest("[data-theme-set]")
+          if (!btn) return
+          const t = btn.getAttribute("data-theme-set")
+          root.setAttribute("data-theme", t)
+          document.querySelectorAll("[data-theme-set]").forEach(b =>
+            b.setAttribute("aria-pressed", String(b === btn))
+          )
+        },
+      )
+    </script>
+  </body>
+</html>

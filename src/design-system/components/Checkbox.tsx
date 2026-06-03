@@ -35,14 +35,14 @@ export function Checkbox(
   return (
     <label
       htmlFor={inputId}
-      className="inline-flex items-start gap-s text-text-primary"
+      className="inline-flex items-start gap-s text-text"
     >
       <input
         {...props}
         id={inputId}
         type="checkbox"
         aria-describedby={hintId}
-        className="mt-2xs h-[1.1rem] w-[1.1rem] accent-accent-solid"
+        className="mt-2xs h-[1.1rem] w-[1.1rem] accent-accent"
       />
       <Stack gap="2xs">
         {labelContent}

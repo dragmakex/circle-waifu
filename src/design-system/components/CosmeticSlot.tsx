@@ -21,10 +21,10 @@ export function CosmeticSlot(
   return (
     <Surface tone={tone}>
       <div className="flex items-center gap-s px-s py-2xs min-w-[10rem]">
-        <span className="font-mono text-[0.7rem] tracking-[0.18em] uppercase text-text-muted">
+        <span className="font-pixel text-micro tracking-[0.12em] uppercase text-text-mut">
           {label}
         </span>
-        <span className="font-semibold text-text-primary text-[0.85rem] truncate">
+        <span className="font-pixel text-label text-phosphor [text-shadow:var(--cw-glow-soft)] truncate">
           {value}
         </span>
       </div>

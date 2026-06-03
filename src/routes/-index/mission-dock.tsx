@@ -20,20 +20,25 @@ type MissionDockProps = {
   readonly share: ShareResult
 }
 
+const statusToTone = {
+  ready: "pending",
+  prepared: "pending",
+  verified: "verified",
+} as const
+
 const fallbackTransactionHash =
   "0x00000000000000000000000000000000000000000000000000000000c1rc1e" as TransactionHash
 
 /**
- * Bottom-dock mission control panel.
+ * Mission action panel rendered as the day's CTA card.
  *
  * Shows today's hypothesis, the chain action, a transaction-hash input, and
- * the three action buttons (prepare, verify, share). Designed to sit under
- * the waifu stage on mobile and span the dock slot on desktop.
+ * the three action buttons (prepare, verify, share).
  *
  * @param props - Component props.
  * @param props.mission - Daily mission read model.
  * @param props.share - Share card metadata.
- * @returns Mission action dock.
+ * @returns Mission action card.
  */
 export function MissionDock({ mission, share }: MissionDockProps) {
   const startMission = useAtomSet(startMissionAtom)
@@ -58,34 +63,34 @@ export function MissionDock({ mission, share }: MissionDockProps) {
   }
 
   return (
-    <Card tone="accent">
+    <Card tone="accent" bracketed>
       <Stack gap="m">
         <Inline align="between" wrap>
           <Stack gap="2xs">
-            <Text tone="label">
+            <Text tone="label" as="span">
               TODAY&apos;S HYPOTHESIS
             </Text>
             <Heading as="h2" tone="section">
               {mission.title}
             </Heading>
           </Stack>
-          <Badge tone={mission.status === "verified" ? "success" : "accent"}>
+          <Badge tone={statusToTone[mission.status]}>
             {mission.status.toUpperCase()}
           </Badge>
         </Inline>
-        <Text>
+        <Text tone="note">
           {mission.hypothesis}
         </Text>
         <Stack gap="2xs">
-          <Text tone="label">
+          <Text tone="label" as="span">
             CHAIN ACTION
           </Text>
           <Text>
             {mission.action.label}
           </Text>
           <Text tone="caption">
-            {mission.action.chainName} · {mission.costLabel} · {mission
-              .riskLabel}
+            {mission.action.chainName} · {mission.costLabel} ·{" "}
+            {mission.riskLabel}
           </Text>
         </Stack>
         <TextField
@@ -96,14 +101,14 @@ export function MissionDock({ mission, share }: MissionDockProps) {
           hint={mission.action.verificationHint}
         />
         <Inline wrap>
-          <Button onClick={handlePrepare} variant="secondary">
+          <Button variant="phosphor" onClick={handlePrepare}>
             Prepare
           </Button>
-          <Button onClick={handleVerify}>
-            Verify mission
+          <Button variant="primary" onClick={handleVerify}>
+            Run experiment
           </Button>
-          <Button onClick={handleShare} variant="ghost">
-            Share
+          <Button variant="ghost" onClick={handleShare}>
+            Share cast
           </Button>
         </Inline>
         <Text tone="caption">
