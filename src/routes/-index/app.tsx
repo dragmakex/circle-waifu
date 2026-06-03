@@ -1,15 +1,14 @@
-import { Footer } from "@/component/Footer"
 import { Card } from "@/design-system/components/Card"
 import { Dock } from "@/design-system/components/Dock"
-import { Page } from "@/design-system/components/Page"
-import { PageHeader } from "@/design-system/components/PageHeader"
 import { Text } from "@/design-system/components/Text"
 import { ThemeToggle } from "@/design-system/components/ThemeToggle"
+import { VerifyBurst } from "@/design-system/components/VerifyBurst"
+import { AppShell } from "@/design-system/primitives/AppShell"
 import { Stack } from "@/design-system/primitives/Stack"
 import { useAtomValue } from "@effect/atom-react"
 import sdk from "@farcaster/miniapp-sdk"
 import * as AsyncResult from "effect/unstable/reactivity/AsyncResult"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { labDashboardAtom } from "./atoms"
 import { LabConsole } from "./lab-console"
 import { LogSheet } from "./log-sheet"
@@ -30,12 +29,18 @@ const dockItems = [
 /**
  * Renders the Farcaster Mini App lab console shell.
  *
+ * Composes the full prototype layout: a CRT-haloed phone bezel containing
+ * the home stage, sheets, modal, dock and theme toggle, with a verify
+ * burst overlay that triggers on a mission status transition.
+ *
  * @returns Circle Waifu application UI.
  */
 export function App() {
   const result = useAtomValue(labDashboardAtom)
   const [activeScreen, setActiveScreen] = useState<Screen>("home")
   const [nameModalOpen, setNameModalOpen] = useState(false)
+  const [burstVisible, setBurstVisible] = useState(false)
+  const lastVerifiedMissionId = useRef<string | null>(null)
 
   useEffect(() => {
     if (result._tag !== "Initial" && !result.waiting) {
@@ -43,79 +48,97 @@ export function App() {
     }
   }, [result])
 
-  const handleSelect = (key: Screen) => {
-    if (key === "home") {
-      setActiveScreen("home")
+  // Fire the verify burst when a mission status flips to verified.
+  useEffect(() => {
+    if (result._tag !== "Success") {
       return
     }
-    setActiveScreen(key)
-  }
+    const snapshot = result.value
+    if (snapshot.mission.status !== "verified") {
+      return
+    }
+    if (lastVerifiedMissionId.current === snapshot.mission.id) {
+      return
+    }
+    lastVerifiedMissionId.current = snapshot.mission.id
+    setBurstVisible(true)
+  }, [result])
 
   const closeSheet = () => setActiveScreen("home")
+  const onMissionTap = () => setActiveScreen("mission")
+  const onNameWaifu = () => setNameModalOpen(true)
 
   return (
-    <Page>
-      <Stack gap="l">
-        <PageHeader
-          title="CIRCLE WAIFU"
-          description="Daily CRC lab. One mission. One observation. One weekly bento ticket."
-        />
-        {AsyncResult
-          .builder(result)
-          .onInitial(() => (
+    <AppShell>
+      {AsyncResult
+        .builder(result)
+        .onInitial(() => (
+          <Stack gap="m">
             <Card tone="subtle">
               <Text tone="muted">
                 Booting Farcaster lab console…
               </Text>
             </Card>
-          ))
-          .onFailure(() => (
+          </Stack>
+        ))
+        .onFailure(() => (
+          <Stack gap="m">
             <Card tone="danger">
               <Text tone="danger">
                 Lab snapshot unavailable. Check the RPC console and retry.
               </Text>
             </Card>
-          ))
-          .onSuccess((snapshot) => (
-            <>
-              <LabConsole snapshot={snapshot} />
-              <MissionSheet
-                open={activeScreen === "mission"}
-                onClose={closeSheet}
-                snapshot={snapshot}
-              />
-              <PoolSheet
-                open={activeScreen === "pool"}
-                onClose={closeSheet}
-                snapshot={snapshot}
-              />
-              <ProfileSheet
-                open={activeScreen === "profile"}
-                onClose={closeSheet}
-                snapshot={snapshot}
-              />
-              <LogSheet
-                open={activeScreen === "log"}
-                onClose={closeSheet}
-                snapshot={snapshot}
-              />
-              <NameModal
-                open={nameModalOpen}
-                currentName={snapshot.waifu.name}
-                onClose={() => setNameModalOpen(false)}
-                onSubmit={() => setNameModalOpen(false)}
-              />
-            </>
-          ))
-          .render()}
-        <Footer />
-      </Stack>
+          </Stack>
+        ))
+        .onSuccess((snapshot) => (
+          <>
+            <LabConsole
+              snapshot={snapshot}
+              onMissionTap={onMissionTap}
+              onNameWaifu={onNameWaifu}
+              onOpenLog={() => setActiveScreen("log")}
+              onOpenPool={() => setActiveScreen("pool")}
+              onOpenProfile={() => setActiveScreen("profile")}
+            />
+            <MissionSheet
+              open={activeScreen === "mission"}
+              onClose={closeSheet}
+              snapshot={snapshot}
+            />
+            <PoolSheet
+              open={activeScreen === "pool"}
+              onClose={closeSheet}
+              snapshot={snapshot}
+            />
+            <ProfileSheet
+              open={activeScreen === "profile"}
+              onClose={closeSheet}
+              snapshot={snapshot}
+            />
+            <LogSheet
+              open={activeScreen === "log"}
+              onClose={closeSheet}
+              snapshot={snapshot}
+            />
+            <NameModal
+              open={nameModalOpen}
+              currentName={snapshot.waifu.name}
+              onClose={() => setNameModalOpen(false)}
+              onSubmit={() => setNameModalOpen(false)}
+            />
+            <VerifyBurst
+              visible={burstVisible}
+              onDone={() => setBurstVisible(false)}
+            />
+          </>
+        ))
+        .render()}
+      <ThemeToggle />
       <Dock
         items={dockItems}
         active={activeScreen}
-        onSelect={handleSelect}
+        onSelect={(key) => setActiveScreen(key)}
       />
-      <ThemeToggle />
-    </Page>
+    </AppShell>
   )
 }

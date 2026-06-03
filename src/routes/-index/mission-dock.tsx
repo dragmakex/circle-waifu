@@ -18,6 +18,7 @@ import { shareResultAtom, startMissionAtom, verifyMissionAtom } from "./atoms"
 type MissionDockProps = {
   readonly mission: DailyMission
   readonly share: ShareResult
+  readonly onOpenDetail?: (() => void) | undefined
 }
 
 const statusToTone = {
@@ -38,9 +39,12 @@ const fallbackTransactionHash =
  * @param props - Component props.
  * @param props.mission - Daily mission read model.
  * @param props.share - Share card metadata.
+ * @param props.onOpenDetail - Optional callback for opening the detail sheet.
  * @returns Mission action card.
  */
-export function MissionDock({ mission, share }: MissionDockProps) {
+export function MissionDock(
+  { mission, onOpenDetail, share }: MissionDockProps,
+) {
   const startMission = useAtomSet(startMissionAtom)
   const verifyMission = useAtomSet(verifyMissionAtom)
   const shareResult = useAtomSet(shareResultAtom)
@@ -110,6 +114,11 @@ export function MissionDock({ mission, share }: MissionDockProps) {
           <Button variant="ghost" onClick={handleShare}>
             Share cast
           </Button>
+          {onOpenDetail !== undefined && (
+            <Button variant="ghost" onClick={onOpenDetail}>
+              Details
+            </Button>
+          )}
         </Inline>
         <Text tone="caption">
           Share card: {share.title}

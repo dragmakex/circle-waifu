@@ -9,7 +9,7 @@ type ModalProps = {
 }
 
 const scrim =
-  "fixed inset-0 z-50 grid place-items-center p-l bg-[rgba(2,3,8,.74)] backdrop-blur-sm motion-safe:animate-[cw-fade_220ms_cubic-bezier(.2,.7,.3,1)]"
+  "absolute inset-0 z-[40] grid place-items-center p-l bg-[rgba(2,3,8,.74)] backdrop-blur-sm motion-safe:animate-[cw-fade_220ms_cubic-bezier(.2,.7,.3,1)]"
 const dialogBase =
   "w-full max-w-[320px] text-center bg-bg-panel border-2 border-line-bright rounded-md p-l flex flex-col gap-m"
 const titleBase =

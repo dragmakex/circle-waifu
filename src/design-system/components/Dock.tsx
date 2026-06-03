@@ -14,7 +14,7 @@ type DockProps<T extends string> = {
 }
 
 const dockBase =
-  "fixed bottom-0 left-0 right-0 z-30 flex items-center justify-around gap-xs px-m h-[76px] bg-[color-mix(in_oklab,var(--cw-ink-800)_86%,transparent)] border-t-2 border-line backdrop-blur-md [padding-bottom:env(safe-area-inset-bottom,0px)]"
+  "relative z-[12] flex items-center justify-around gap-xs px-m h-[76px] bg-[color-mix(in_oklab,var(--cw-ink-800)_86%,transparent)] border-t-2 border-line backdrop-blur-md [padding-bottom:env(safe-area-inset-bottom,0px)] shrink-0"
 
 const buttonBase =
   "flex flex-col items-center gap-[4px] bg-transparent border-0 cursor-pointer px-s py-2xs text-text-mut font-pixel text-micro uppercase tracking-[0.12em] transition-colors duration-150 hover:text-text-dim focus-visible:outline-none focus-visible:[box-shadow:0_0_0_2px_var(--cw-ink-900),0_0_0_4px_var(--cw-phosphor)]"

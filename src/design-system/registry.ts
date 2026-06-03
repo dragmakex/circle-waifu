@@ -33,6 +33,14 @@ export const registry = {
       "Tamagotchi-style stage — center sprite slot with corner pills and a bottom action dock, mobile-collapsible",
     "primitives/CrtScreen.tsx":
       "CRT effect wrapper — scanlines + vignette + optional flicker/beam, motion-gated",
+    "primitives/AppShell.tsx":
+      "Top-level phone-shell bezel — rounded CRT halo wrapper anchoring sheets/dock/modal/burst",
+    "primitives/HudTop.tsx":
+      "Home top HUD row — name chip + status chips with safe-area padding",
+    "primitives/StageWrap.tsx":
+      "Centered stage with floating satellite slots — 3:4 viewport with absolute satellites",
+    "primitives/HomeLower.tsx":
+      "Home lower band — greeting + mission card sitting above the dock",
   },
 
   components: {
@@ -78,6 +86,12 @@ export const registry = {
       "Centered scrim modal — dismiss-on-outside / Escape, scoped to short flows",
     "components/ThemeToggle.tsx":
       "Floating theme FAB — toggles data-theme and persists choice locally",
+    "components/Satellite.tsx":
+      "Floating round satellite — small circular action affordance for stage edges",
+    "components/NameChip.tsx":
+      "HUD identity chip — clickable name + level + streak pixel chip",
+    "components/VerifyBurst.tsx":
+      "Verify celebration overlay — radial accent burst with auto-dismiss",
   },
 } as const
 

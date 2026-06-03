@@ -233,6 +233,20 @@
       opacity: 1;
     }
   }
+
+  @keyframes cw-pop {
+    0% {
+      transform: scale(0.6);
+      opacity: 0;
+    }
+    60% {
+      transform: scale(1.12);
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
 }
 
 @layer base {

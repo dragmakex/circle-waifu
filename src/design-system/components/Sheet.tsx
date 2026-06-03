@@ -10,7 +10,7 @@ type SheetProps = {
 }
 
 const containerBase =
-  "fixed inset-0 z-40 flex flex-col bg-bg-canvas motion-safe:animate-[cw-sheet-up_220ms_cubic-bezier(.2,.7,.3,1)]"
+  "absolute inset-0 z-[20] flex flex-col bg-bg-canvas motion-safe:animate-[cw-sheet-up_220ms_cubic-bezier(.2,.7,.3,1)]"
 const headBase =
   "flex items-center justify-between gap-s px-m [padding-top:calc(env(safe-area-inset-top,0px)+16px)] pb-s border-b border-line bg-[color-mix(in_oklab,var(--cw-ink-800)_86%,transparent)] backdrop-blur-md"
 const bodyBase = "flex-1 overflow-y-auto px-m py-m"

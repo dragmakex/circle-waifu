@@ -1,113 +1,141 @@
 import type { LabDashboardSnapshot } from "@/api/circle-waifu-schema"
 import { Chip } from "@/design-system/components/Chip"
 import { Heading } from "@/design-system/components/Heading"
+import { NameChip } from "@/design-system/components/NameChip"
+import { Satellite } from "@/design-system/components/Satellite"
 import { Text } from "@/design-system/components/Text"
-import { CrtScreen } from "@/design-system/primitives/CrtScreen"
-import { Inline } from "@/design-system/primitives/Inline"
+import { WaifuSprite } from "@/design-system/components/WaifuSprite"
+import { HomeLower } from "@/design-system/primitives/HomeLower"
+import { HudTop } from "@/design-system/primitives/HudTop"
 import { Stack } from "@/design-system/primitives/Stack"
-import { Stage } from "@/design-system/primitives/Stage"
+import { StageWrap } from "@/design-system/primitives/StageWrap"
 import { MissionDock } from "./mission-dock"
-import { WaifuCenter } from "./waifu-center"
 
 type LabConsoleProps = {
   readonly snapshot: LabDashboardSnapshot
+  readonly onMissionTap: () => void
+  readonly onNameWaifu: () => void
+  readonly onOpenLog: () => void
+  readonly onOpenPool: () => void
+  readonly onOpenProfile: () => void
 }
 
 /**
  * Home / Lab Console screen.
  *
- * Composes the floating HUD around the CRT-framed waifu, with chips for
- * streak / tickets / pool / level, plus the daily mission action panel.
+ * Mirrors the prototype layout: top HUD with a clickable name chip and
+ * status chip cluster, a stage-wrap with a 3:4 waifu viewport and three
+ * floating satellites (day badge top-left, log and pool shortcuts on
+ * the sides), and a lower band hosting the greeting + mission CTA.
  *
  * @param props - Component props.
  * @param props.snapshot - Hydrated dashboard snapshot.
+ * @param props.onMissionTap - Opens the mission detail sheet.
+ * @param props.onNameWaifu - Opens the name modal.
+ * @param props.onOpenLog - Opens the activity log sheet.
+ * @param props.onOpenPool - Opens the weekly pool sheet.
+ * @param props.onOpenProfile - Opens the waifu profile sheet.
  * @returns Home screen layout.
  */
-export function LabConsole({ snapshot }: LabConsoleProps) {
-  return (
-    <Stack gap="l">
-      <Inline align="between" wrap>
-        <Chip
-          label={snapshot.waifu.name.toUpperCase()}
-          value={`LV ${snapshot.waifu.level}`}
-          tone="accent"
-        />
-        <Inline gap="xs" wrap>
-          <Chip
-            label="STREAK"
-            value={`${snapshot.streak.current}d`}
-            tone="warning"
-          />
-          <Chip
-            label="TICKETS"
-            value={`${snapshot.weeklyPool.userTickets}/7`}
-          />
-        </Inline>
-      </Inline>
+export function LabConsole(
+  {
+    onMissionTap,
+    onNameWaifu,
+    onOpenLog,
+    onOpenPool,
+    onOpenProfile,
+    snapshot,
+  }: LabConsoleProps,
+) {
+  const dayIndex = Math.max(1, Math.min(99, snapshot.streak.current + 1))
 
-      <CrtScreen flicker beam rounded="lg" tinted padded>
-        <Stage
-          center={<WaifuCenter user={snapshot.user} waifu={snapshot.waifu} />}
-          northWest={
+  return (
+    <>
+      <HudTop
+        left={
+          <NameChip
+            name={snapshot.waifu.name}
+            level={snapshot.waifu.level}
+            streak={snapshot.streak.current}
+            onClick={onNameWaifu}
+          />
+        }
+        right={
+          <>
             <Chip
-              label="LV"
-              value={snapshot.waifu.level}
-              tone="accent"
+              label="TICKETS"
+              value={`${snapshot.weeklyPool.userTickets}/7`}
             />
-          }
-          northEast={
             <Chip
               label="POOL"
-              value={`${snapshot.weeklyPool.balanceCrc} CRC`}
+              value={`${snapshot.weeklyPool.balanceCrc}`}
+              tone="accent"
             />
-          }
-          southWest={
-            <Chip
-              label="MOOD"
-              value={snapshot
-                .waifu
-                .mood
-                .toUpperCase()}
-            />
-          }
-          southEast={
-            <Chip
-              label="STATUS"
-              value={snapshot.weeklyPool.drawStatus.toUpperCase()}
-              tone="success"
-            />
-          }
-          dock={
-            <MissionDock
-              mission={snapshot.mission}
-              share={snapshot.share}
-            />
-          }
-        />
-      </CrtScreen>
+          </>
+        }
+      />
 
-      <Stack gap="s">
-        <Heading as="h2" tone="card">
-          OBSERVATION LOG
-        </Heading>
-        {snapshot.activity.length === 0
-          ? (
-            <Text tone="muted">
-              No verified field experiments yet. The lab notebook is waiting for
-              one real CRC action.
-            </Text>
-          )
-          : snapshot.activity.map((entry) => (
-            <Stack key={entry.id} gap="2xs">
-              <Text tone="label" as="span">
-                {entry.label}
-              </Text>
+      <StageWrap
+        topLeft={
+          <Satellite
+            label={`Day ${dayIndex}`}
+            icon={`D${dayIndex}`}
+            onClick={onOpenProfile}
+          />
+        }
+        middleLeft={
+          <Satellite
+            label="Open observation log"
+            icon="≣"
+            size="m"
+            onClick={onOpenLog}
+          />
+        }
+        middleRight={
+          <Satellite
+            label="Open weekly pool"
+            icon="◈"
+            size="m"
+            onClick={onOpenPool}
+          />
+        }
+      >
+        <WaifuSprite
+          mood={snapshot.waifu.mood}
+          name={snapshot.waifu.name}
+          size="xl"
+        />
+      </StageWrap>
+
+      <HomeLower>
+        <Text>
+          {`Greetings, ${snapshot.user.displayName}. Hypothesis engine online.`}
+        </Text>
+        <MissionDock
+          mission={snapshot.mission}
+          share={snapshot.share}
+          onOpenDetail={onMissionTap}
+        />
+        <Stack gap="2xs">
+          <Heading as="h2" tone="card">
+            OBSERVATION LOG
+          </Heading>
+          {snapshot.activity.length === 0
+            ? (
               <Text tone="caption">
-                {entry.detail}
+                No verified field experiments yet. The lab notebook is waiting
+                for one real CRC action.
               </Text>
-            </Stack>
-          ))}
-      </Stack>
-    </Stack>
+            )
+            : snapshot.activity.slice(0, 2).map((entry) => (
+              <Text key={entry.id} tone="caption">
+                {entry
+                  .label} — {entry
+                  .detail}
+              </Text>
+            ))}
+        </Stack>
+      </HomeLower>
+    </>
   )
 }

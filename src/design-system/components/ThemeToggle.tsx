@@ -5,7 +5,7 @@ type Theme = "dark" | "light"
 const STORAGE_KEY = "cw-theme"
 
 const buttonClass =
-  "fixed right-m bottom-m z-30 w-[44px] h-[44px] rounded-full grid place-items-center bg-[color-mix(in_oklab,var(--cw-ink-800)_82%,transparent)] border-2 border-line-bright text-phosphor cursor-pointer backdrop-blur-md text-[18px] transition-transform duration-200 ease-out hover:scale-110 hover:[box-shadow:var(--cw-glow-phosphor)] focus-visible:outline-none focus-visible:[box-shadow:0_0_0_2px_var(--cw-ink-900),0_0_0_4px_var(--cw-phosphor)]"
+  "absolute right-[14px] bottom-[calc(76px+14px)] z-[14] w-[40px] h-[40px] rounded-full grid place-items-center bg-[color-mix(in_oklab,var(--cw-ink-800)_80%,transparent)] border-2 border-line-bright text-phosphor cursor-pointer backdrop-blur-md text-[16px] transition-transform duration-200 ease-out hover:scale-110 hover:[box-shadow:var(--cw-glow-phosphor)] focus-visible:outline-none focus-visible:[box-shadow:0_0_0_2px_var(--cw-ink-900),0_0_0_4px_var(--cw-phosphor)]"
 
 const readInitialTheme = (): Theme => {
   if (typeof window === "undefined") {
