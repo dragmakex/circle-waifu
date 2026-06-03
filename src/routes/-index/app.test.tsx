@@ -1,8 +1,8 @@
 import * as Effect from "effect/Effect"
 import { describe, expect, it, vi } from "vitest"
 
-vi.mock("./lab-console", () => ({
-  LabConsole: () => null,
+vi.mock("@/design-system/primitives/OrbitStage", () => ({
+  OrbitStage: () => null,
 }))
 
 vi.mock("@farcaster/miniapp-sdk", () => ({

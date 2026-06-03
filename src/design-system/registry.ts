@@ -29,18 +29,8 @@ export const registry = {
       "Flex-grow child — enables fluid layouts inside Inline/Stack",
     "primitives/Surface.tsx":
       "Semantic background/border/shadow — visual tone system",
-    "primitives/Stage.tsx":
-      "Tamagotchi-style stage — center sprite slot with corner pills and a bottom action dock, mobile-collapsible",
-    "primitives/CrtScreen.tsx":
-      "CRT effect wrapper — scanlines + vignette + optional flicker/beam, motion-gated",
-    "primitives/AppShell.tsx":
-      "Top-level phone-shell bezel — rounded CRT halo wrapper anchoring sheets/dock/modal/burst",
-    "primitives/HudTop.tsx":
-      "Home top HUD row — name chip + status chips with safe-area padding",
-    "primitives/StageWrap.tsx":
-      "Centered stage with floating satellite slots — 3:4 viewport with absolute satellites",
-    "primitives/HomeLower.tsx":
-      "Home lower band — greeting + mission card sitting above the dock",
+    "primitives/OrbitStage.tsx":
+      "Single-screen layout — center waifu sprite with action buttons orbiting on four sides",
   },
 
   components: {
@@ -62,36 +52,12 @@ export const registry = {
     "components/Tabs.tsx": "Tab list — interactive segmented view with counts",
     "components/PageHeader.tsx":
       "Composed pattern — title + description + actions, used by every page",
-    "components/StatCard.tsx":
-      "Composed pattern — dashboard metric card with label/value/helper",
     "components/EmptyState.tsx":
       "State pattern — required for every data surface",
     "components/ErrorState.tsx":
       "State pattern — required for every data surface",
     "components/WaifuSprite.tsx":
       "Animated pixel sprite — mood-driven 4-frame sheet with crisp pixel rendering",
-    "components/MoodMeter.tsx":
-      "Segmented progress bar — semantic mood/care indicator with min/max contract",
-    "components/CosmeticSlot.tsx":
-      "Labeled equipped-cosmetic chip — single-slot pattern with tone variants",
-    "components/Chip.tsx":
-      "HUD chip — glass-blurred floating key/value status read-out around the stage",
-    "components/IconButton.tsx":
-      "Round satellite icon button — accessible 44px hit target with active state",
-    "components/Dock.tsx":
-      "Blurred bottom navigation dock — pixel-labeled tabs with safe-area padding",
-    "components/Sheet.tsx":
-      "Slide-up full-screen sheet — secondary screen pattern with keyboard close",
-    "components/Modal.tsx":
-      "Centered scrim modal — dismiss-on-outside / Escape, scoped to short flows",
-    "components/ThemeToggle.tsx":
-      "Floating theme FAB — toggles data-theme and persists choice locally",
-    "components/Satellite.tsx":
-      "Floating round satellite — small circular action affordance for stage edges",
-    "components/NameChip.tsx":
-      "HUD identity chip — clickable name + level + streak pixel chip",
-    "components/VerifyBurst.tsx":
-      "Verify celebration overlay — radial accent burst with auto-dismiss",
   },
 } as const
 
