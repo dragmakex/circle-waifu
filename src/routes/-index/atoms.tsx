@@ -1,19 +1,15 @@
 /**
  * Pattern: Effect-native Atoms (React)
- * Purpose: Reactive state management with @effect/atom-react, SSR hydration support,
- * and optimistic updates via writable async atoms
- * See: docs/architecture/effect-native-atoms.md (THE PATTERN DOCUMENTATION)
- * See: docs/guides/adding-new-features.md (HOW TO COPY THIS PATTERN)
+ * Purpose: Circle Waifu dashboard state with SSR hydration support.
  */
 
 import { ApiClient } from "@/api/api-client"
 import type {
-  CreateTodoInput,
-  TodoDashboardSnapshot,
-  TodoId,
-  UpdateTodoInput,
-} from "@/api/todo-schema"
-import { TodoDashboardSnapshot as TodoDashboardSnapshotSchema } from "@/api/todo-schema"
+  LabDashboardSnapshot,
+  MissionPrepareInput,
+  MissionVerifyInput,
+} from "@/api/circle-waifu-schema"
+import { LabDashboardSnapshot as LabDashboardSnapshotSchema } from "@/api/circle-waifu-schema"
 import { serializable } from "@/lib/atom-utils"
 import * as Context from "effect/Context"
 import * as Effect from "effect/Effect"
@@ -23,21 +19,22 @@ import * as AsyncResult from "effect/unstable/reactivity/AsyncResult"
 import * as Atom from "effect/unstable/reactivity/Atom"
 import * as RpcClientError from "effect/unstable/rpc/RpcClientError"
 
-const TodoDashboardAsyncResultSchema = AsyncResult.Schema({
-  success: TodoDashboardSnapshotSchema,
+const LabDashboardAsyncResultSchema = AsyncResult.Schema({
+  success: LabDashboardSnapshotSchema,
   error: RpcClientError.RpcClientError,
 })
 
-class Api extends Context.Service<Api>()("@app/index/Api", {
+class Api extends Context.Service<Api>()("@app/index/CircleWaifuApi", {
   make: Effect.gen(function*() {
     const { rpc } = yield* ApiClient
 
     return {
-      snapshot: () => rpc.todos_snapshot(),
-      create: (input: CreateTodoInput) => rpc.todos_create({ input }),
-      update: (id: TodoId, input: UpdateTodoInput) =>
-        rpc.todos_update({ id, input }),
-      remove: (id: TodoId) => rpc.todos_remove({ id }),
+      snapshot: () => rpc.lab_snapshot(),
+      prepareMission: (input: MissionPrepareInput) =>
+        rpc.mission_prepare({ input }),
+      verifyMission: (input: MissionVerifyInput) =>
+        rpc.mission_verify({ input }),
+      shareResult: () => rpc.lab_snapshot(),
     } as const
   }),
 }) {
@@ -54,10 +51,10 @@ type ReplaceValue<A> = {
 }
 
 /**
- * Wraps a remote async atom so successful values can be replaced locally.
+ * Wraps a remote async atom so successful snapshots can be replaced locally.
  *
- * @param remoteAtom - The remote async atom to wrap.
- * @returns A writable async atom with refresh support.
+ * @param remoteAtom - Remote atom populated through RPC.
+ * @returns Writable atom with refresh support.
  */
 function makeWritableAsyncAtom<A>(
   remoteAtom: Atom.Atom<
@@ -75,7 +72,7 @@ function makeWritableAsyncAtom<A>(
   )
 }
 
-const dashboardSnapshotRemoteAtom = runtime
+const labDashboardRemoteAtom = runtime
   .atom(
     Effect.gen(function*() {
       const api = yield* Api
@@ -84,83 +81,80 @@ const dashboardSnapshotRemoteAtom = runtime
   )
   .pipe(
     serializable({
-      key: "@app/index/todo-dashboard",
-      schema: Schema.toCodecJson(TodoDashboardAsyncResultSchema),
+      key: "@app/index/circle-waifu-dashboard",
+      schema: Schema.toCodecJson(LabDashboardAsyncResultSchema),
     }),
   )
 
-export const dashboardSnapshotAtom = Object.assign(
-  makeWritableAsyncAtom(dashboardSnapshotRemoteAtom),
-  {
-    remote: dashboardSnapshotRemoteAtom,
-  },
+export const labDashboardAtom = Object.assign(
+  makeWritableAsyncAtom(labDashboardRemoteAtom),
+  { remote: labDashboardRemoteAtom },
 )
 
 /**
- * Derives a read-only async atom from the shared dashboard snapshot atom.
+ * Derives a read-only async atom from the shared lab dashboard snapshot.
  *
  * @param selector - Projection applied to successful dashboard snapshots.
- * @returns A derived async atom with a matching remote projection.
+ * @returns Derived atom with a matching remote projection.
  */
-function mapSnapshotAtom<A>(
-  selector: (snapshot: TodoDashboardSnapshot) => A,
-) {
-  const remote = dashboardSnapshotRemoteAtom.pipe(
+function mapDashboardAtom<A>(selector: (snapshot: LabDashboardSnapshot) => A) {
+  const remote = labDashboardRemoteAtom.pipe(
     Atom.map((result) => AsyncResult.map(result, selector)),
   )
 
   return Object.assign(
-    dashboardSnapshotAtom.pipe(
+    labDashboardAtom.pipe(
       Atom.map((result) => AsyncResult.map(result, selector)),
     ),
     { remote },
   )
 }
 
-export const todosAtom = mapSnapshotAtom((snapshot) => snapshot.todos)
+export const dailyMissionAtom = mapDashboardAtom((snapshot) => snapshot.mission)
 
-export const todoStatsAtom = mapSnapshotAtom((snapshot) => snapshot.stats)
+export const streakAtom = mapDashboardAtom((snapshot) => snapshot.streak)
 
-export const todoGroupsAtom = mapSnapshotAtom((snapshot) => snapshot.groups)
+export const weeklyPoolAtom = mapDashboardAtom((snapshot) =>
+  snapshot.weeklyPool
+)
+
+export const waifuStateAtom = mapDashboardAtom((snapshot) => snapshot.waifu)
 
 const replaceDashboardSnapshot = (
   get: {
     readonly set: (
-      atom: typeof dashboardSnapshotAtom,
-      update: ReplaceValue<TodoDashboardSnapshot>,
+      atom: typeof labDashboardAtom,
+      update: ReplaceValue<LabDashboardSnapshot>,
     ) => void
   },
-  snapshot: TodoDashboardSnapshot,
+  snapshot: LabDashboardSnapshot,
 ) => {
-  get.set(dashboardSnapshotAtom, { _tag: "Replace", value: snapshot })
+  get.set(labDashboardAtom, { _tag: "Replace", value: snapshot })
 }
 
-export const createTodoAtom = runtime.fn<CreateTodoInput>()(
+export const startMissionAtom = runtime.fn<MissionPrepareInput>()(
   Effect.fnUntraced(function*(input, get) {
     const api = yield* Api
-    const snapshot = yield* api.create(input)
+    const snapshot = yield* api.prepareMission(input)
     replaceDashboardSnapshot(get, snapshot)
     return snapshot
   }),
 )
 
-export const updateTodoAtom = runtime.fn<{
-  readonly id: TodoId
-  readonly input: UpdateTodoInput
-}>()(
-  Effect.fnUntraced(function*({ id, input }, get) {
+export const verifyMissionAtom = runtime.fn<MissionVerifyInput>()(
+  Effect.fnUntraced(function*(input, get) {
     const api = yield* Api
-    const snapshot = yield* api.update(id, input)
+    const snapshot = yield* api.verifyMission(input)
     replaceDashboardSnapshot(get, snapshot)
     return snapshot
   }),
 )
 
-export const deleteTodoAtom = runtime.fn<TodoId>()(
-  Effect.fnUntraced(function*(id, get) {
+export const shareResultAtom = runtime.fn<void>()(
+  Effect.fnUntraced(function*(_, get) {
     const api = yield* Api
-    const snapshot = yield* api.remove(id)
+    const snapshot = yield* api.shareResult()
     replaceDashboardSnapshot(get, snapshot)
-    return snapshot
+    return snapshot.share
   }),
 )

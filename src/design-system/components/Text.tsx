@@ -2,12 +2,20 @@ import { cx } from "@/design-system/foundation/classes"
 import type { HTMLAttributes, ReactNode } from "react"
 
 const toneClass = {
-  body: "text-text-secondary text-[0.95rem] leading-[1.5]",
-  muted: "text-text-muted text-[0.95rem] leading-[1.5]",
+  body: "font-mono text-text text-body leading-[1.55]",
+  muted: "font-mono text-text-dim text-body leading-[1.55]",
   label:
-    "text-text-secondary text-[0.8rem] font-semibold tracking-[0.02em] uppercase",
-  caption: "text-text-muted text-[0.85rem] leading-[1.4]",
-  danger: "text-danger-solid text-[0.85rem] leading-[1.4]",
+    "font-pixel text-phosphor text-label uppercase tracking-[0.14em] leading-[1.4] [text-shadow:var(--cw-glow-soft)]",
+  accentLabel:
+    "font-pixel text-accent text-label uppercase tracking-[0.14em] leading-[1.4]",
+  dimLabel:
+    "font-pixel text-text-dim text-label uppercase tracking-[0.14em] leading-[1.4]",
+  micro:
+    "font-pixel text-text-mut text-micro uppercase tracking-[0.12em] leading-[1.4]",
+  caption: "font-mono text-text-mut text-[13px] leading-[1.45]",
+  danger: "font-mono text-danger text-[13px] leading-[1.45]",
+  note:
+    "font-mono text-text text-body leading-[1.55] before:content-['>_'] before:text-phosphor",
 } as const
 
 const alignClass = {

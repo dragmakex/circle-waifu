@@ -2,13 +2,17 @@ import { cx } from "@/design-system/foundation/classes"
 import type { ButtonHTMLAttributes, ReactNode } from "react"
 
 const baseClass =
-  "inline-flex items-center justify-center gap-xs min-h-11 px-m border border-transparent rounded-md text-[0.95rem] font-semibold cursor-pointer transition-all duration-160 ease-in-out hover:not-disabled:-translate-y-px disabled:cursor-not-allowed disabled:opacity-60 focus-visible:outline-2 focus-visible:outline-focus-ring focus-visible:outline-offset-2"
+  "inline-flex items-center justify-center gap-xs min-h-11 px-m py-s border-2 rounded-md font-pixel text-label uppercase tracking-[0.14em] cursor-pointer transition-all duration-150 ease-out hover:not-disabled:-translate-y-px active:translate-y-px disabled:cursor-not-allowed disabled:opacity-40 disabled:shadow-none disabled:translate-y-0 focus-visible:outline-none focus-visible:[box-shadow:0_0_0_2px_var(--cw-ink-900),0_0_0_4px_var(--cw-phosphor)]"
 
 const variantClass = {
-  primary: "bg-accent-solid text-white",
-  secondary: "border-border-default bg-bg-surface text-text-primary",
-  ghost: "bg-transparent text-text-secondary",
-  danger: "bg-danger-solid text-white",
+  primary:
+    "bg-accent text-text-inv border-accent-hi shadow-[var(--cw-glow-accent)] hover:not-disabled:brightness-110",
+  phosphor:
+    "bg-transparent text-phosphor border-phosphor-dim hover:not-disabled:border-phosphor hover:not-disabled:shadow-[var(--cw-glow-phosphor)]",
+  secondary:
+    "bg-bg-raised text-text border-line-bright hover:not-disabled:shadow-[var(--cw-glow-soft)]",
+  ghost: "bg-transparent text-text-dim border-line",
+  danger: "bg-danger text-text-inv border-danger",
 } as const
 
 type ButtonProps =
@@ -47,7 +51,7 @@ export function Button(
       disabled={disabled || loading}
       className={cx(baseClass, variantClass[variant])}
     >
-      {loading ? "Working…" : children}
+      {loading ? "WORKING…" : children}
     </button>
   )
 }

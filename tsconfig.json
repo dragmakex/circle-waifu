@@ -4,9 +4,7 @@
     "src/**/*.tsx",
     "scripts/**/*.ts",
     "tests/**/*.ts",
-    "tests/**/*.tsx",
-    "docs/reference/**/*.ts",
-    "docs/reference/**/*.tsx"
+    "tests/**/*.tsx"
   ],
   "exclude": ["./.worktrees", "./.repos", "node_modules"],
   "compilerOptions": {

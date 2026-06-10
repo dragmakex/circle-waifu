@@ -1,20 +1,12 @@
 import * as Effect from "effect/Effect"
 import { describe, expect, it, vi } from "vitest"
 
-vi.mock("./create-todo-form", () => ({
-  CreateTodoForm: () => null,
+vi.mock("@/design-system/primitives/OrbitStage", () => ({
+  OrbitStage: () => null,
 }))
 
-vi.mock("./dashboard-stats", () => ({
-  DashboardStats: () => null,
-}))
-
-vi.mock("./grouped-todo-board", () => ({
-  GroupedTodoBoard: () => null,
-}))
-
-vi.mock("./recent-activity", () => ({
-  RecentActivity: () => null,
+vi.mock("@farcaster/miniapp-sdk", () => ({
+  default: { actions: { ready: vi.fn() } },
 }))
 
 const assertAppExports = Effect.gen(function*() {

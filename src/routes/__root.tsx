@@ -19,7 +19,28 @@ export const Route = createRootRoute({
         content: "width=device-width, initial-scale=1",
       },
       {
-        title: "TanStack Start Starter",
+        title: "Circle Waifu",
+      },
+      {
+        name: "description",
+        content: "Daily CRC lab missions for Farcaster Mini App users.",
+      },
+      {
+        name: "fc:miniapp",
+        content: JSON.stringify({
+          version: "1",
+          imageUrl: "/logo512.png",
+          button: {
+            title: "Open lab console",
+            action: {
+              type: "launch_miniapp",
+              name: "Circle Waifu",
+              url: "/",
+              splashImageUrl: "/logo512.png",
+              splashBackgroundColor: "#10140f",
+            },
+          },
+        }),
       },
     ],
     links: [
@@ -53,7 +74,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
   }, [])
 
   return (
-    <html lang="en">
+    <html lang="en" data-theme="dark">
       <head>
         <HeadContent />
       </head>

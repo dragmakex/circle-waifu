@@ -1,4 +1,4 @@
-import { getTodoDashboardSnapshot } from "@/features/todos/application"
+import { getLabDashboardSnapshot } from "@/features/daily-lab/application"
 import { HydrationBoundary } from "@/lib/atom-hydration"
 import { dehydrate } from "@/lib/atom-utils"
 import { createFileRoute } from "@tanstack/react-router"
@@ -8,17 +8,17 @@ import * as Effect from "effect/Effect"
 import { pipe } from "effect/Function"
 import * as AsyncResult from "effect/unstable/reactivity/AsyncResult"
 import { App } from "./-index/app"
-import { dashboardSnapshotAtom } from "./-index/atoms"
+import { labDashboardAtom } from "./-index/atoms"
 import { serverRuntime } from "./api/$"
 
-const getTodoDashboardHydration = pipe(
-  getTodoDashboardSnapshot,
+const getLabDashboardHydration = pipe(
+  getLabDashboardSnapshot,
   Effect.flatMap((snapshot) =>
     pipe(
       Clock.currentTimeMillis,
       Effect.map((dehydratedAt) => [
         dehydrate(
-          dashboardSnapshotAtom.remote,
+          labDashboardAtom.remote,
           AsyncResult.success(snapshot),
           dehydratedAt,
         ),
@@ -27,19 +27,19 @@ const getTodoDashboardHydration = pipe(
   ),
 )
 
-const getTodoDashboard = createServerFn({ method: "GET" }).handler(() =>
-  serverRuntime.runPromise(getTodoDashboardHydration)
+const getLabDashboard = createServerFn({ method: "GET" }).handler(() =>
+  serverRuntime.runPromise(getLabDashboardHydration)
 )
 
 export const Route = createFileRoute("/")({
-  loader: () => getTodoDashboard(),
+  loader: () => getLabDashboard(),
   component: AppWrapper,
 })
 
 /**
- * Wraps the main application component with a HydrationBoundary to provide dehydrated data.
+ * Provides SSR atom hydration for the Circle Waifu app route.
  *
- * @returns The wrapped application component.
+ * @returns Hydrated app route component.
  */
 function AppWrapper() {
   const dehydrated = Route.useLoaderData()

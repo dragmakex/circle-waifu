@@ -3,3 +3,4 @@
 - 2026-04-16: I passed backticks in a `gh pr create --body` shell command, which triggered unintended command substitution warnings. Fix: avoid backticks in unescaped shell strings or use single-quoted heredoc/file input for PR bodies.
 - 2026-06-02: I ran `bun run format:check` before dependencies were installed and hit `dprint: command not found`. Fix: check `node_modules` first, run `bun install`, or use `bunx dprint` in fresh checkouts.
 - 2026-06-02: I used an over-broad scripted replacement for `@effect-diagnostics` comments and temporarily damaged unrelated JSDoc closers. Fix: use an anchored one-line regex and inspect the diff immediately before continuing.
+- 2026-06-02: I imported `node:fs/promises` directly in Effect-heavy repository code and tripped the Effect diagnostics gate. Fix: avoid Node builtins in typed Effect modules unless using the project-approved Effect platform service or remove the filesystem edge entirely.

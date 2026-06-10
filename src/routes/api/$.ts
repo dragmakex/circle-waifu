@@ -7,7 +7,7 @@
 
 import { DomainApi } from "@/api/domain-api"
 import { DomainRpc } from "@/api/domain-rpc"
-import { TodosApplicationLive } from "@/features/todos/application"
+import { CircleWaifuApplicationLive } from "@/features/daily-lab/application"
 import { ObservabilityLive } from "@/lib/observability"
 import {
   initPyroscopeServer,
@@ -30,8 +30,8 @@ import * as HttpApiBuilder from "effect/unstable/httpapi/HttpApiBuilder"
 import * as RpcMiddleware from "effect/unstable/rpc/RpcMiddleware"
 import * as RpcSerialization from "effect/unstable/rpc/RpcSerialization"
 import * as RpcServer from "effect/unstable/rpc/RpcServer"
-import { TodosApiLive } from "./-lib/todos-api-live"
-import { TodosRpcLive } from "./-lib/todos-rpc-live"
+import { CircleWaifuApiLive } from "./-lib/circle-waifu-api-live"
+import { CircleWaifuRpcLive } from "./-lib/circle-waifu-rpc-live"
 
 /**
  * RPC logging middleware - logs errors for failed RPC requests.
@@ -124,7 +124,7 @@ export const RpcRouter = RpcServer
     disableFatalDefects: true,
   })
   .pipe(
-    Layer.provide(TodosRpcLive),
+    Layer.provide(CircleWaifuRpcLive),
     Layer.provide(RpcLoggerLive),
     Layer.provide(
       RpcServer.layerProtocolHttp({ path: "/api/rpc" }).pipe(
@@ -134,7 +134,7 @@ export const RpcRouter = RpcServer
   )
 
 export const HttpApiRouter = HttpApiBuilder.layer(DomainApi).pipe(
-  Layer.provide(TodosApiLive),
+  Layer.provide(CircleWaifuApiLive),
   Layer.provide(HttpServer.layerServices),
 )
 
@@ -193,7 +193,7 @@ const ObservabilityRuntimeLive = Layer.orDie(ObservabilityLive)
  *
  * Pattern: Layer.provideMerge — merges multiple service layers into runtime.
  */
-export const ServerRuntimeLive = TodosApplicationLive.pipe(
+export const ServerRuntimeLive = CircleWaifuApplicationLive.pipe(
   Layer.provideMerge(ObservabilityRuntimeLive),
   Layer.provideMerge(SentryLive),
   Layer.provideMerge(DevConsoleLive),

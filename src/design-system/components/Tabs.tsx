@@ -16,8 +16,9 @@ type TabsProps<T extends string> = {
 }
 
 const tabBase =
-  "inline-flex items-center gap-xs min-h-10 px-m border border-transparent rounded-md bg-transparent text-text-secondary cursor-pointer"
-const tabActive = "border-accent-wash bg-bg-surface text-text-primary shadow-sm"
+  "inline-flex items-center gap-xs min-h-10 px-m border-2 border-transparent rounded-md bg-transparent text-text-dim font-pixel text-label uppercase tracking-[0.1em] cursor-pointer transition-colors duration-150 hover:text-phosphor"
+const tabActive =
+  "border-phosphor-dim bg-bg-raised text-phosphor [text-shadow:var(--cw-glow-soft)] [box-shadow:var(--cw-glow-soft)]"
 
 const toDomId = (value: string): string =>
   value.toLowerCase().replaceAll(/[^a-z0-9]+/g, "-").replaceAll(/^-|-$/g, "")
@@ -44,7 +45,7 @@ export function Tabs<T extends string>(
   return (
     <div
       role="tablist"
-      className="p-xs border border-border-default rounded-lg bg-bg-subtle flex flex-wrap gap-xs"
+      className="p-xs border border-line rounded-md bg-bg-raised flex flex-wrap gap-xs"
     >
       {items.map((item) => {
         const active = item.key === activeTab

@@ -29,6 +29,8 @@ export const registry = {
       "Flex-grow child — enables fluid layouts inside Inline/Stack",
     "primitives/Surface.tsx":
       "Semantic background/border/shadow — visual tone system",
+    "primitives/OrbitStage.tsx":
+      "Single-screen layout — center waifu sprite with action buttons orbiting on four sides",
   },
 
   components: {
@@ -50,12 +52,12 @@ export const registry = {
     "components/Tabs.tsx": "Tab list — interactive segmented view with counts",
     "components/PageHeader.tsx":
       "Composed pattern — title + description + actions, used by every page",
-    "components/StatCard.tsx":
-      "Composed pattern — dashboard metric card with label/value/helper",
     "components/EmptyState.tsx":
       "State pattern — required for every data surface",
     "components/ErrorState.tsx":
       "State pattern — required for every data surface",
+    "components/WaifuSprite.tsx":
+      "Animated pixel sprite — mood-driven 4-frame sheet with crisp pixel rendering",
   },
 } as const
 

@@ -8,31 +8,37 @@ vi.mock("@/api/api-client", () => ({
 }))
 
 const assertDashboardAtomExports = Effect.gen(function*() {
-  const { runtime, todoGroupsAtom, todosAtom, todoStatsAtom } = yield* Effect
-    .promise(() => import("./atoms"))
+  const {
+    dailyMissionAtom,
+    labDashboardAtom,
+    runtime,
+    streakAtom,
+    waifuStateAtom,
+    weeklyPoolAtom,
+  } = yield* Effect.promise(() => import("./atoms"))
 
   expect(runtime).toBeDefined()
-  expect(todosAtom).toBeDefined()
-  expect(todosAtom.remote).toBeDefined()
-  expect(todoStatsAtom).toBeDefined()
-  expect(todoStatsAtom.remote).toBeDefined()
-  expect(todoGroupsAtom).toBeDefined()
-  expect(todoGroupsAtom.remote).toBeDefined()
+  expect(labDashboardAtom).toBeDefined()
+  expect(labDashboardAtom.remote).toBeDefined()
+  expect(dailyMissionAtom.remote).toBeDefined()
+  expect(streakAtom.remote).toBeDefined()
+  expect(weeklyPoolAtom.remote).toBeDefined()
+  expect(waifuStateAtom.remote).toBeDefined()
 })
 
 const assertDashboardMutationAtomExports = Effect.gen(function*() {
-  const { createTodoAtom, deleteTodoAtom, updateTodoAtom } = yield* Effect
+  const { shareResultAtom, startMissionAtom, verifyMissionAtom } = yield* Effect
     .promise(() => import("./atoms"))
 
-  expect(createTodoAtom).toBeDefined()
-  expect(updateTodoAtom).toBeDefined()
-  expect(deleteTodoAtom).toBeDefined()
+  expect(startMissionAtom).toBeDefined()
+  expect(verifyMissionAtom).toBeDefined()
+  expect(shareResultAtom).toBeDefined()
 })
 
 describe("atoms", () => {
-  it("exports runtime and dashboard atoms", () =>
+  it("exports Circle Waifu dashboard atoms", () =>
     Effect.runPromise(assertDashboardAtomExports))
 
-  it("exports dashboard mutation atoms", () =>
+  it("exports Circle Waifu mutation atoms", () =>
     Effect.runPromise(assertDashboardMutationAtomExports))
 })

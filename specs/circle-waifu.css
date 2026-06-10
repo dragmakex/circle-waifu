@@ -1,0 +1,802 @@
+/* ============================================================================
+   CIRCLE WAIFU — CORE DESIGN TOKENS & PRIMITIVES
+   ----------------------------------------------------------------------------
+   "Inside the CRT" — retro research-lab terminal + anime waifu companion.
+   Hand this file to Claude Code as the source of truth. Compose screens from
+   the tokens and .cw-* primitive classes below; do not hardcode hex values in
+   route code.
+
+   THEMES:  data-theme="dark"  (default, immersive CRT ink)
+            data-theme="light" (warm lab-paper)
+   ========================================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=Press+Start+2P&family=IBM+Plex+Mono:wght@400;500;600&display=swap");
+
+/* ----------------------------------------------------------------------------
+   1. TOKENS — DARK (default)
+   -------------------------------------------------------------------------- */
+:root,
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* — Canvas / surfaces (cyan-tinted near-black ink) — */
+  --cw-ink-900: #05060c; /* app canvas, deepest */
+  --cw-ink-800: #0a0c16; /* primary panel */
+  --cw-ink-700: #10131f; /* raised panel */
+  --cw-ink-600: #171b2b; /* hover / inset */
+  --cw-line: #232a40; /* hairline borders */
+  --cw-line-bright: #324063;
+
+  /* — Phosphor (primary signal: cyan / electric blue) — */
+  --cw-phosphor: #45e0ff;
+  --cw-phosphor-hi: #aef4ff; /* highlight / hot pixel */
+  --cw-phosphor-dim: #2b8aa3; /* muted phosphor */
+  --cw-phosphor-deep: #12414f; /* faint trace */
+
+  /* — Accent (waifu-coded hot magenta) — */
+  --cw-accent: #ff4d9d;
+  --cw-accent-hi: #ff8fc2;
+  --cw-accent-dim: #a3306a;
+
+  /* — Status — */
+  --cw-success: #57f2a3; /* lab green */
+  --cw-warning: #ffc24d; /* caution amber */
+  --cw-danger: #ff5d6c; /* alert red */
+
+  /* — Text — */
+  --cw-text: #dff3ff; /* primary, cyan-tinted white */
+  --cw-text-dim: #8fa6bd; /* secondary */
+  --cw-text-mut: #5d6f86; /* tertiary / disabled */
+  --cw-text-inv: #05060c; /* on bright fills */
+
+  /* — Glow strengths (used in text-shadow / box-shadow) — */
+  --cw-glow-phosphor:
+    0 0 6px rgba(69, 224, 255, 0.55), 0 0 18px rgba(69, 224, 255, 0.25);
+  --cw-glow-accent:
+    0 0 6px rgba(255, 77, 157, 0.55), 0 0 20px rgba(255, 77, 157, 0.30);
+  --cw-glow-soft: 0 0 2px rgba(69, 224, 255, 0.40);
+
+  /* — Surface treatments — */
+  --cw-panel-bg: var(--cw-ink-800);
+  --cw-panel-border: 1px solid var(--cw-line);
+  --cw-scanline-opacity: 0.14;
+  --cw-vignette: radial-gradient(
+    120% 110% at 50% 42%,
+    transparent 55%,
+    rgba(0, 0, 0, 0.55) 100%
+  );
+}
+
+/* ----------------------------------------------------------------------------
+   2. TOKENS — LIGHT (warm lab-paper)
+   -------------------------------------------------------------------------- */
+[data-theme="light"] {
+  color-scheme: light;
+
+  --cw-ink-900: #efe9da; /* warm paper canvas */
+  --cw-ink-800: #f6f1e6; /* primary panel */
+  --cw-ink-700: #fbf7ee; /* raised panel */
+  --cw-ink-600: #e7e0cf; /* hover / inset */
+  --cw-line: #d3c9b2;
+  --cw-line-bright: #b9ab8c;
+
+  /* On light paper, phosphor darkens to a deep teal so it stays legible */
+  --cw-phosphor: #0a7d99;
+  --cw-phosphor-hi: #0996b8;
+  --cw-phosphor-dim: #5c8f9c;
+  --cw-phosphor-deep: #b7d4dc;
+
+  --cw-accent: #c81e6e;
+  --cw-accent-hi: #e23d8c;
+  --cw-accent-dim: #e9a9c6;
+
+  --cw-success: #1f9d63;
+  --cw-warning: #b8791a;
+  --cw-danger: #cc3344;
+
+  --cw-text: #1a1813;
+  --cw-text-dim: #5a5446;
+  --cw-text-mut: #8a8170;
+  --cw-text-inv: #f6f1e6;
+
+  --cw-glow-phosphor: 0 0 1px rgba(10, 125, 153, 0.25);
+  --cw-glow-accent: 0 0 1px rgba(200, 30, 110, 0.25);
+  --cw-glow-soft: none;
+
+  --cw-panel-bg: var(--cw-ink-800);
+  --cw-panel-border: 1px solid var(--cw-line);
+  --cw-scanline-opacity: 0.05;
+  --cw-vignette: radial-gradient(
+    120% 110% at 50% 42%,
+    transparent 70%,
+    rgba(120, 100, 60, 0.10) 100%
+  );
+}
+
+/* ----------------------------------------------------------------------------
+   3. TYPE / SPACE / RADII / ELEVATION  (theme-agnostic)
+   -------------------------------------------------------------------------- */
+:root {
+  /* Fonts */
+  --cw-font-pixel:
+    "Silkscreen", "Press Start 2P", monospace; /* short labels, stats */
+  --cw-font-hero: "Press Start 2P", monospace; /* big numerals / splash */
+  --cw-font-mono:
+    "IBM Plex Mono", ui-monospace, "SFMono-Regular", monospace; /* body */
+
+  /* Type scale (px) */
+  --cw-fs-micro: 9px; /* pixel micro-labels */
+  --cw-fs-label: 11px; /* pixel labels (track letter-spacing) */
+  --cw-fs-body: 14px;
+  --cw-fs-lead: 16px;
+  --cw-fs-h3: 20px;
+  --cw-fs-h2: 28px;
+  --cw-fs-h1: 40px;
+  --cw-fs-mega: 56px;
+
+  --cw-lh-tight: 1.15;
+  --cw-lh-body: 1.55;
+  --cw-tracking-label: 0.14em; /* pixel labels breathe */
+  --cw-tracking-mono: 0.01em;
+
+  /* Spacing (4px base grid) */
+  --cw-s1: 4px;
+  --cw-s2: 8px;
+  --cw-s3: 12px;
+  --cw-s4: 16px;
+  --cw-s5: 24px;
+  --cw-s6: 32px;
+  --cw-s7: 48px;
+  --cw-s8: 64px;
+
+  /* Radii — hardware-edged, never pill-soft except dock pills */
+  --cw-r-sm: 2px;
+  --cw-r-md: 4px;
+  --cw-r-lg: 8px;
+  --cw-r-pill: 999px;
+
+  /* Borders & focus */
+  --cw-bw: 1px;
+  --cw-bw-2: 2px;
+  --cw-focus: 0 0 0 2px var(--cw-ink-900), 0 0 0 4px var(--cw-phosphor);
+
+  /* Motion */
+  --cw-dur-fast: 120ms;
+  --cw-dur: 220ms;
+  --cw-dur-slow: 420ms;
+  --cw-ease: cubic-bezier(0.2, 0.7, 0.3, 1);
+  --cw-ease-step: steps(6, end); /* pixel-snappy transitions */
+
+  /* Layout */
+  --cw-app-max: 480px; /* Farcaster mini-app: phone width cap */
+  --cw-dock-h: 76px;
+  --cw-hud-gap: 10px;
+}
+
+/* ----------------------------------------------------------------------------
+   4. BASE / RESET
+   -------------------------------------------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--cw-ink-900);
+  color: var(--cw-text);
+  font-family: var(--cw-font-mono);
+  font-size: var(--cw-fs-body);
+  line-height: var(--cw-lh-body);
+  letter-spacing: var(--cw-tracking-mono);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--cw-accent);
+  color: var(--cw-text-inv);
+}
+
+:focus-visible {
+  outline: none;
+  box-shadow: var(--cw-focus);
+}
+
+/* ----------------------------------------------------------------------------
+   5. TYPE PRIMITIVES
+   -------------------------------------------------------------------------- */
+.cw-label {
+  font-family: var(--cw-font-pixel);
+  font-size: var(--cw-fs-label);
+  letter-spacing: var(--cw-tracking-label);
+  text-transform: uppercase;
+  color: var(--cw-phosphor);
+  text-shadow: var(--cw-glow-soft);
+  line-height: 1.4;
+}
+.cw-label--accent {
+  color: var(--cw-accent);
+}
+.cw-label--dim {
+  color: var(--cw-text-dim);
+  text-shadow: none;
+}
+.cw-micro {
+  font-family: var(--cw-font-pixel);
+  font-size: var(--cw-fs-micro);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--cw-text-mut);
+}
+
+.cw-hero {
+  font-family: var(--cw-font-hero);
+  color: var(--cw-phosphor);
+  text-shadow: var(--cw-glow-phosphor);
+  line-height: 1.1;
+}
+
+.cw-readout {
+  /* big stat numerals */
+  font-family: var(--cw-font-hero);
+  font-size: var(--cw-fs-h2);
+  color: var(--cw-text);
+  text-shadow: var(--cw-glow-soft);
+}
+
+.cw-body {
+  font-family: var(--cw-font-mono);
+  font-size: var(--cw-fs-body);
+  color: var(--cw-text-dim);
+}
+.cw-note {
+  /* waifu lab notes — italic-flavored mono */
+  font-family: var(--cw-font-mono);
+  font-size: var(--cw-fs-body);
+  color: var(--cw-text);
+  line-height: var(--cw-lh-body);
+}
+.cw-note::before {
+  content: "> ";
+  color: var(--cw-phosphor);
+}
+
+/* ----------------------------------------------------------------------------
+   6. CRT EFFECT LAYERS
+   Apply .cw-crt to a full-bleed container. Children sit above the texture.
+   -------------------------------------------------------------------------- */
+.cw-crt {
+  position: relative;
+  isolation: isolate;
+}
+.cw-crt > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* scanlines */
+.cw-crt::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0px,
+    rgba(0, 0, 0, 0) 2px,
+    rgba(0, 0, 0, var(--cw-scanline-opacity)) 3px,
+    rgba(0, 0, 0, var(--cw-scanline-opacity)) 3px
+  );
+  background-size: 100% 3px;
+  mix-blend-mode: multiply;
+}
+/* vignette + faint phosphor wash */
+.cw-crt::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: var(--cw-vignette);
+}
+
+/* optional gentle flicker — gated on reduced-motion */
+@media (prefers-reduced-motion: no-preference) {
+  .cw-crt--flicker::before {
+    animation: cw-flicker 5.5s infinite steps(60);
+  }
+  @keyframes cw-flicker {
+    0%, 96%, 100% {
+      opacity: 1;
+    }
+    97% {
+      opacity: 0.82;
+    }
+    98% {
+      opacity: 0.94;
+    }
+  }
+}
+
+/* moving scan beam — decorative, subtle */
+.cw-scanbeam {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  overflow: hidden;
+}
+.cw-scanbeam::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 28%;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(69, 224, 255, 0.06),
+    transparent
+  );
+}
+@media (prefers-reduced-motion: no-preference) {
+  .cw-scanbeam::after {
+    animation: cw-sweep 7s linear infinite;
+  }
+  @keyframes cw-sweep {
+    0% {
+      top: -30%;
+    }
+    100% {
+      top: 100%;
+    }
+  }
+}
+
+/* ----------------------------------------------------------------------------
+   7. PANELS / ASCII FRAMES
+   -------------------------------------------------------------------------- */
+.cw-panel {
+  background: var(--cw-panel-bg);
+  border: var(--cw-panel-border);
+  border-radius: var(--cw-r-md);
+  padding: var(--cw-s4);
+  position: relative;
+}
+.cw-panel--raised {
+  background: var(--cw-ink-700);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+}
+.cw-panel--glow {
+  box-shadow: var(--cw-glow-phosphor);
+  border-color: var(--cw-phosphor-dim);
+}
+
+/* corner-bracket frame (ASCII terminal vibe) */
+.cw-bracket {
+  position: relative;
+}
+.cw-bracket::before, .cw-bracket::after {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  pointer-events: none;
+  border: var(--cw-bw-2) solid var(--cw-phosphor);
+}
+.cw-bracket::before {
+  top: -2px;
+  left: -2px;
+  border-right: 0;
+  border-bottom: 0;
+}
+.cw-bracket::after {
+  bottom: -2px;
+  right: -2px;
+  border-left: 0;
+  border-top: 0;
+}
+
+/* panel title strip */
+.cw-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--cw-s2);
+  margin: 0 0 var(--cw-s3);
+  padding-bottom: var(--cw-s2);
+  border-bottom: 1px dashed var(--cw-line);
+}
+
+/* ----------------------------------------------------------------------------
+   8. BUTTONS
+   -------------------------------------------------------------------------- */
+.cw-btn {
+  --_bg: var(--cw-ink-700);
+  --_fg: var(--cw-text);
+  --_bd: var(--cw-line-bright);
+  appearance: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--cw-s2);
+  font-family: var(--cw-font-pixel);
+  font-size: var(--cw-fs-label);
+  letter-spacing: var(--cw-tracking-label);
+  text-transform: uppercase;
+  color: var(--_fg);
+  background: var(--_bg);
+  border: var(--cw-bw-2) solid var(--_bd);
+  border-radius: var(--cw-r-md);
+  padding: 14px 18px;
+  min-height: 44px; /* hit target */
+  transition:
+    transform var(--cw-dur-fast) var(--cw-ease),
+    box-shadow var(--cw-dur-fast) var(--cw-ease),
+    background var(--cw-dur-fast) var(--cw-ease);
+}
+.cw-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--cw-glow-soft);
+}
+.cw-btn:active {
+  transform: translateY(1px);
+}
+
+.cw-btn--primary {
+  --_bg: var(--cw-accent);
+  --_fg: var(--cw-text-inv);
+  --_bd: var(--cw-accent-hi);
+  box-shadow: var(--cw-glow-accent);
+}
+.cw-btn--primary:hover {
+  box-shadow: var(--cw-glow-accent);
+  filter: brightness(1.06);
+}
+
+.cw-btn--phosphor {
+  --_bg: transparent;
+  --_fg: var(--cw-phosphor);
+  --_bd: var(--cw-phosphor-dim);
+}
+.cw-btn--phosphor:hover {
+  box-shadow: var(--cw-glow-phosphor);
+  border-color: var(--cw-phosphor);
+}
+
+.cw-btn--ghost {
+  --_bg: transparent;
+  --_fg: var(--cw-text-dim);
+  --_bd: var(--cw-line);
+}
+.cw-btn:disabled, .cw-btn[aria-disabled="true"] {
+  cursor: not-allowed;
+  opacity: 0.4;
+  box-shadow: none;
+  transform: none;
+}
+
+/* icon-only round satellite button (floats around the waifu) */
+.cw-iconbtn {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--cw-r-pill);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  background: color-mix(in oklab, var(--cw-ink-800) 78%, transparent);
+  border: var(--cw-bw-2) solid var(--cw-line-bright);
+  color: var(--cw-phosphor);
+  backdrop-filter: blur(6px);
+  transition:
+    transform var(--cw-dur) var(--cw-ease),
+    box-shadow var(--cw-dur) var(--cw-ease),
+    border-color var(--cw-dur) var(--cw-ease);
+}
+.cw-iconbtn:hover {
+  transform: scale(1.08);
+  box-shadow: var(--cw-glow-phosphor);
+  border-color: var(--cw-phosphor);
+}
+.cw-iconbtn[data-active="true"] {
+  border-color: var(--cw-accent);
+  color: var(--cw-accent);
+  box-shadow: var(--cw-glow-accent);
+}
+
+/* ----------------------------------------------------------------------------
+   9. HUD CHIPS (floating status read-outs around the waifu)
+   -------------------------------------------------------------------------- */
+.cw-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--cw-s2);
+  padding: 7px 11px;
+  background: color-mix(in oklab, var(--cw-ink-800) 72%, transparent);
+  border: var(--cw-bw) solid var(--cw-line);
+  border-radius: var(--cw-r-md);
+  backdrop-filter: blur(8px);
+  white-space: nowrap;
+}
+.cw-chip .cw-chip-k {
+  font-family: var(--cw-font-pixel);
+  font-size: var(--cw-fs-micro);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--cw-text-dim);
+}
+.cw-chip .cw-chip-v {
+  font-family: var(--cw-font-pixel);
+  font-size: var(--cw-fs-label);
+  color: var(--cw-phosphor);
+  text-shadow: var(--cw-glow-soft);
+}
+.cw-chip--accent .cw-chip-v {
+  color: var(--cw-accent);
+}
+.cw-chip--streak .cw-chip-v {
+  color: var(--cw-warning);
+}
+
+/* ----------------------------------------------------------------------------
+   10. PROGRESS / XP / METER
+   -------------------------------------------------------------------------- */
+.cw-meter {
+  height: 12px;
+  background: var(--cw-ink-600);
+  border: var(--cw-bw) solid var(--cw-line);
+  border-radius: var(--cw-r-sm);
+  overflow: hidden;
+}
+.cw-meter > i {
+  display: block;
+  height: 100%;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--cw-phosphor) 0 6px,
+    var(--cw-phosphor-dim) 6px 8px
+  );
+  box-shadow: var(--cw-glow-soft);
+  transition: width var(--cw-dur-slow) var(--cw-ease-step);
+}
+.cw-meter--xp > i {
+  background: repeating-linear-gradient(
+    90deg,
+    var(--cw-accent) 0 6px,
+    var(--cw-accent-dim) 6px 8px
+  );
+}
+
+/* segmented streak dots (7-day week) */
+.cw-segs {
+  display: inline-flex;
+  gap: 4px;
+}
+.cw-segs > i {
+  width: 10px;
+  height: 10px;
+  border-radius: 1px;
+  background: var(--cw-ink-600);
+  border: 1px solid var(--cw-line);
+}
+.cw-segs > i[data-on="true"] {
+  background: var(--cw-warning);
+  border-color: var(--cw-warning);
+  box-shadow: 0 0 6px rgba(255, 194, 77, 0.5);
+}
+
+/* ----------------------------------------------------------------------------
+   11. BADGES / TAGS / STATUS PILLS
+   -------------------------------------------------------------------------- */
+.cw-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--cw-font-pixel);
+  font-size: var(--cw-fs-micro);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 4px 8px;
+  border-radius: var(--cw-r-sm);
+  border: var(--cw-bw) solid currentColor;
+}
+.cw-badge--verified {
+  color: var(--cw-success);
+}
+.cw-badge--pending {
+  color: var(--cw-warning);
+}
+.cw-badge--failed {
+  color: var(--cw-danger);
+}
+.cw-badge--locked {
+  color: var(--cw-text-mut);
+}
+.cw-badge::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: var(--cw-r-pill);
+  background: currentColor;
+  box-shadow: 0 0 6px currentColor;
+}
+
+/* blinking cursor accent */
+.cw-cursor::after {
+  content: "_";
+  color: var(--cw-phosphor);
+  animation: cw-blink 1s steps(2) infinite;
+}
+@keyframes cw-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* ----------------------------------------------------------------------------
+   12. WAIFU VIEWPORT (the CRT-framed portrait slot)
+   -------------------------------------------------------------------------- */
+.cw-waifu {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  width: 100%;
+  border: var(--cw-bw-2) solid var(--cw-phosphor-dim);
+  border-radius: var(--cw-r-lg);
+  overflow: hidden;
+  background:
+    radial-gradient(
+      80% 60% at 50% 38%,
+      color-mix(in oklab, var(--cw-accent) 14%, transparent),
+      transparent 70%
+    ),
+    var(--cw-ink-800);
+  box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.6), var(--cw-glow-phosphor);
+}
+.cw-waifu > img, .cw-waifu > image-slot, .cw-waifu > .cw-waifu-art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* mood ring tints the frame */
+.cw-waifu[data-mood="happy"] {
+  border-color: var(--cw-success);
+}
+.cw-waifu[data-mood="neutral"] {
+  border-color: var(--cw-phosphor-dim);
+}
+.cw-waifu[data-mood="sad"] {
+  border-color: var(--cw-text-mut);
+  filter: saturate(0.7);
+}
+.cw-waifu[data-mood="hyped"] {
+  border-color: var(--cw-accent);
+  box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.6), var(--cw-glow-accent);
+}
+
+/* art placeholder (striped) for when no portrait is supplied */
+.cw-art-ph {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    45deg,
+    var(--cw-ink-700) 0 12px,
+    var(--cw-ink-600) 12px 24px
+  );
+  display: grid;
+  place-items: center;
+  text-align: center;
+  gap: 8px;
+  padding: var(--cw-s5);
+}
+
+/* ----------------------------------------------------------------------------
+   13. COSMETIC TILE (wardrobe / unlocks)
+   -------------------------------------------------------------------------- */
+.cw-cosmetic {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: var(--cw-r-md);
+  border: var(--cw-bw-2) solid var(--cw-line);
+  background: var(--cw-ink-700);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  overflow: hidden;
+  transition:
+    border-color var(--cw-dur) var(--cw-ease),
+    box-shadow var(--cw-dur) var(--cw-ease);
+}
+.cw-cosmetic[data-state="equipped"] {
+  border-color: var(--cw-accent);
+  box-shadow: var(--cw-glow-accent);
+}
+.cw-cosmetic[data-state="unlocked"]:hover {
+  border-color: var(--cw-phosphor);
+}
+.cw-cosmetic[data-state="locked"] {
+  opacity: 0.5;
+}
+.cw-cosmetic[data-state="locked"]::after {
+  content: "🔒";
+  position: absolute;
+  bottom: 6px;
+  right: 6px;
+  font-size: 12px;
+  filter: grayscale(1);
+}
+
+/* ----------------------------------------------------------------------------
+   14. DIVIDERS / ASCII RULE
+   -------------------------------------------------------------------------- */
+.cw-rule {
+  border: 0;
+  border-top: 1px dashed var(--cw-line);
+  margin: var(--cw-s4) 0;
+}
+.cw-rule--solid {
+  border-top: 1px solid var(--cw-line);
+}
+
+/* ----------------------------------------------------------------------------
+   15. APP SHELL (full-bleed mobile mini-app)
+   -------------------------------------------------------------------------- */
+.cw-app {
+  position: relative;
+  width: 100%;
+  max-width: var(--cw-app-max);
+  margin-inline: auto;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--cw-ink-900);
+  overflow: hidden;
+}
+.cw-stage {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.cw-dock {
+  position: relative;
+  height: var(--cw-dock-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 0 var(--cw-s4);
+  background: color-mix(in oklab, var(--cw-ink-800) 86%, transparent);
+  border-top: var(--cw-bw-2) solid var(--cw-line);
+  backdrop-filter: blur(10px);
+}
+
+/* utility */
+.cw-row {
+  display: flex;
+  align-items: center;
+  gap: var(--cw-s3);
+}
+.cw-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cw-s3);
+}
+.cw-grow {
+  flex: 1;
+}
+.cw-center {
+  display: grid;
+  place-items: center;
+}
+.cw-stack {
+  display: grid;
+  gap: var(--cw-s3);
+}

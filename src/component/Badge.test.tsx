@@ -4,7 +4,7 @@ import { expect, test } from "vitest"
 import { render } from "vitest-browser-react"
 import { page } from "vitest/browser"
 
-test("Badge uses the high-contrast neutral contract", async () => {
+test("Badge applies the pixel-label terminal contract", async () => {
   await render(
     <Badge>
       Due 26. März 2026
@@ -14,12 +14,13 @@ test("Badge uses the high-contrast neutral contract", async () => {
   const badge = page.getByText("Due 26. März 2026")
 
   await expect.element(badge).toBeVisible()
-  await expect.element(badge).toHaveClass(/bg-bg-surface/)
-  await expect.element(badge).toHaveClass(/text-text-primary/)
-  await expect.element(badge).toHaveClass(/border-border-default/)
+  await expect.element(badge).toHaveClass(/font-pixel/)
+  await expect.element(badge).toHaveClass(/uppercase/)
+  await expect.element(badge).toHaveClass(/text-text-mut/)
+  await expect.element(badge).toHaveClass(/border-text-mut/)
 })
 
-test("Badge keeps semantic tones while using primary text for contrast", async () => {
+test("Badge swaps text + border tone for each semantic role", async () => {
   await render(
     <>
       <Badge tone="accent">
@@ -34,18 +35,12 @@ test("Badge keeps semantic tones while using primary text for contrast", async (
     </>,
   )
 
-  await expect.element(page.getByText("Accent")).toHaveClass(/bg-bg-accent/)
-  await expect.element(page.getByText("Accent")).toHaveClass(
-    /text-text-primary/,
-  )
+  await expect.element(page.getByText("Accent")).toHaveClass(/text-accent/)
+  await expect.element(page.getByText("Accent")).toHaveClass(/border-accent/)
 
-  await expect.element(page.getByText("Success")).toHaveClass(/bg-bg-success/)
-  await expect.element(page.getByText("Success")).toHaveClass(
-    /text-text-primary/,
-  )
+  await expect.element(page.getByText("Success")).toHaveClass(/text-success/)
+  await expect.element(page.getByText("Success")).toHaveClass(/border-success/)
 
-  await expect.element(page.getByText("Danger")).toHaveClass(/bg-bg-danger/)
-  await expect.element(page.getByText("Danger")).toHaveClass(
-    /text-text-primary/,
-  )
+  await expect.element(page.getByText("Danger")).toHaveClass(/text-danger/)
+  await expect.element(page.getByText("Danger")).toHaveClass(/border-danger/)
 })
