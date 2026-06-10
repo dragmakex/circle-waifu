@@ -1,488 +1,148 @@
-# Effect TanStack Start
+# Circle Waifu
 
-A modern, full-stack TypeScript application built with **Effect-TS**, **TanStack Start**, and **Bun**, featuring comprehensive testing, monitoring, and analytics out of the box.
+Circle Waifu is a Farcaster Mini App prototype for Circles users. A retro research-assistant waifu gives the user one useful onchain mission per day, tracks verification, advances streak state, and grants weekly pool tickets.
 
-## ✨ Features
+The repository is a full-stack TypeScript app built with **TanStack Start**, **React 19**, **Effect**, **Bun**, **Tailwind CSS 4**, and the **Farcaster Mini App SDK**.
 
-### Core Stack
+## What This Repo Contains
 
-- 🚀 **[Bun](https://bun.sh)** - Fast JavaScript runtime and package manager
-- ⚡ **[Effect-TS](https://effect.website)** - Powerful functional effect system
-- 🎯 **[TanStack Start](https://tanstack.com/router/latest/docs/framework/react/start/getting-started)** - Full-stack React framework with SSR
-- 🎨 **[Tailwind CSS 4](https://tailwindcss.com)** - Utility-first CSS framework
-- 📦 **effect/unstable/reactivity + @effect/atom-react** - Atomic state management
-- 🔄 **[effect/unstable/rpc](https://effect.website/docs/guides/rpc/overview)** - Type-safe client-server communication
+- **Farcaster Mini App shell** — the home route renders a single-screen lab console and calls `sdk.actions.ready()` when app data is ready.
+- **Circle Waifu domain model** — typed schemas for users, missions, waifu state, streaks, activity, share payloads, and weekly pools.
+- **Effect application layer** — mission preparation, mission verification, pool entry/status, waifu profile updates, auth verification, and notifications are modeled as Effect workflows.
+- **Type-safe HTTP and RPC contracts** — domain endpoints are defined with `effect/unstable/httpapi` and `effect/unstable/rpc`.
+- **Postgres-shaped persistence** — repository adapter supports `DATABASE_URL` Postgres or local PGlite fallback through Drizzle.
+- **Design-system-driven UI** — reusable primitives/components are registered in `src/design-system/registry.ts`, including the orbit-stage waifu layout.
+- **Observability hooks** — Sentry, PostHog, OpenTelemetry, Loki, Tempo, Prometheus, Grafana, and Pyroscope wiring remain available from the starter foundation.
 
-### Testing & Quality
+## Product Loop
 
-- 🧪 **[Vitest 4](https://vitest.dev)** - Fast unit testing with browser mode
-- 🎭 **[@effect/vitest](https://effect.website/docs/guides/testing/vitest)** - Effect-based testing with TestContext
-- 🌐 **Multi-Browser Testing** - Chromium, Firefox, WebKit via Playwright
-- 📸 **Visual Regression Testing** - Screenshot comparison across browsers
-- 🔍 **Component Testing** - Real browser testing for React components
+1. User opens the Farcaster Mini App.
+2. The app loads the lab dashboard snapshot.
+3. Waifu presents the daily Circles mission.
+4. User prepares or completes the mission.
+5. The app verifies a transaction hash or indexed event boundary.
+6. A verified mission updates streak, waifu progress, activity, and weekly pool tickets.
+7. User can share the result back to Farcaster.
 
-### Observability & Analytics
+See [`SPEC.md`](./SPEC.md) for the product specification.
 
-- 📊 **[Grafana Stack](https://grafana.com)** - Complete monitoring solution
-  - **Loki** - Log aggregation
-  - **Tempo** - Distributed tracing
-  - **Prometheus** - Metrics collection
-  - **Grafana** - Unified dashboards
-- 🐛 **[Sentry](https://sentry.io)** - Error tracking and performance monitoring (self-hosted)
-- 📈 **[PostHog](https://posthog.com)** - Product analytics and feature flags (self-hosted)
-- 🔭 **OpenTelemetry** - Distributed tracing and observability
+## Tech Stack
 
-### Infrastructure
+| Area                    | Tools                                                    |
+| ----------------------- | -------------------------------------------------------- |
+| Runtime/package manager | Bun                                                      |
+| App framework           | TanStack Start, TanStack Router, Nitro                   |
+| UI                      | React 19, Tailwind CSS 4                                 |
+| Domain/runtime          | Effect, Effect Schema, Effect Layer                      |
+| State                   | `effect/unstable/reactivity`, `@effect/atom-react`       |
+| API                     | `effect/unstable/httpapi`, `effect/unstable/rpc`         |
+| Database                | Drizzle ORM, Postgres, PGlite                            |
+| Mini App                | `@farcaster/miniapp-sdk`                                 |
+| Quality                 | Vitest, Playwright browser tests, Oxlint, dprint, tsgo   |
+| Observability           | Sentry, PostHog, OpenTelemetry, Grafana stack, Pyroscope |
 
-- 🐳 **Docker Compose** - Complete local development stack
-- 🔄 **Hot Reload** - Fast development with HMR
-- 🏗️ **Production Ready** - Optimized builds and deployment configs
-
----
-
-## 🚀 Quick Start
-
-### Option 1: Local Development
+## Quick Start
 
 ```bash
-# Install dependencies
 bun install
-
-# Install Playwright browsers for testing
-bunx playwright install --with-deps
-
-# Copy environment template
 cp .env.example .env
-
-# Start development server
 bun run dev
 ```
 
-Visit http://localhost:3000
+Open <http://localhost:3000>.
 
-### Optional: Nix Dev Shell
+Install browser dependencies before running browser/component tests:
+
+```bash
+bunx playwright install --with-deps
+```
+
+Optional Nix shell:
 
 ```bash
 nix develop
 ```
 
-### Option 2: Full Stack with LAOS (Recommended)
+## Environment
 
-```bash
-# Clone LAOS stack (keep it outside this repo)
-git clone https://github.com/dtechvision/laos.git ../laos
-cd ../laos
+Important local variables are documented in [`.env.example`](./.env.example).
 
-# Start observability stack
-docker compose up -d
+- `DATABASE_URL` — when set, the app uses Postgres; otherwise it uses local in-memory PGlite.
+- `VITE_POSTHOG_KEY`, `VITE_POSTHOG_HOST`, `POSTHOG_API_KEY`, `POSTHOG_HOST` — analytics.
+- `SENTRY_DSN`, `VITE_SENTRY_DSN` — error tracking.
+- `OTLP_ENDPOINT`, `LOKI_ENDPOINT`, `LOKI_OTLP_ENDPOINT`, `PYROSCOPE_SERVER_ADDRESS` — telemetry/profiling.
 
-# Configure app env (add DSN/API keys from LAOS UIs)
-cd -
-cp .env.example .env
-echo "SENTRY_DSN=http://...@localhost:9000/1" >> .env
-echo "VITE_SENTRY_DSN=http://...@localhost:9000/1" >> .env
-echo "VITE_POSTHOG_KEY=phc_..." >> .env
-echo "VITE_POSTHOG_HOST=http://localhost:8001" >> .env
-```
+## Project Structure
 
-**Access Services:**
-
-- 🌐 **Application**: http://localhost:3000
-- 📊 **Grafana** (Logs, Traces, Metrics): http://localhost:3010 (admin/admin)
-- 🐛 **Sentry** (Errors): http://localhost:9000
-- 📈 **PostHog** (Analytics): http://localhost:8001
-- 📉 **Prometheus** (Metrics): http://localhost:9090
-
-📚 **See [Observability Setup](./docs/guides/observability-setup.md) for full LAOS + telemetry instructions**
-
----
-
-## 📦 Project Structure
-
-```
-effect-tanstack-start/
-├── docs/                          # Documentation
-│   ├── architecture/              # Architecture and patterns
-│   │   ├── effect-native-atoms.md # State management pattern (START HERE)
-│   │   ├── effect-simple-made-easy-mapping.md # Feature patterns
-│   │   └── overview.md            # System architecture
-│   ├── guides/                    # How-to guides
-│   │   ├── adding-new-features.md # Copy-paste feature guide
-│   │   ├── getting-started.md     # Setup guide
-│   │   ├── observability-setup.md # Full observability + LAOS setup
-│   │   ├── testing.md             # Testing guide
-│   │   └── telemetry.md           # Observability guide
-│   └── reference/                 # Reference implementations
-│       └── todo/                  # Todo app reference (symlinked)
+```text
+circle-waifu/
+├── SPEC.md                         # Product specification
 ├── src/
-│   ├── api/                       # API schemas and clients
-│   ├── features/                  # Domain features (todos/)
-│   ├── lib/                       # Shared utilities
-│   ├── routes/                    # File-based routing
-│   │   └── -index/                → symlink to docs/reference/todo/
-│   └── *.test.ts                  # Unit tests
-├── AGENTS.md                      # Agent instructions (START HERE)
-├── CONTRIBUTING.md                # Contribution guidelines
-└── TESTING_AND_TELEMETRY.md       # Testing & observability
+│   ├── api/                        # Circle Waifu schemas, HTTP API, RPC API
+│   ├── db/                         # Drizzle schema and repository adapter
+│   ├── design-system/              # Registered UI primitives/components
+│   ├── features/
+│   │   ├── daily-lab/              # Mission orchestration, projections, events
+│   │   ├── waifu/                  # Waifu domain projections/events
+│   │   └── weekly-pool/            # Weekly pool projections/events
+│   ├── lib/                        # Hydration, atoms, telemetry, analytics helpers
+│   └── routes/                     # TanStack Start routes and API runtime wiring
+├── docs/
+│   ├── architecture/               # Effect/native atoms and architecture patterns
+│   ├── design-system/              # UI rules
+│   └── guides/                     # Setup, testing, DB, observability, quality
+├── AGENTS.md                       # Contributor/agent workflow index
+└── package.json                    # Scripts and dependencies
 ```
 
----
+## Key Files
 
-## 🧪 Testing
+- [`src/routes/index.tsx`](./src/routes/index.tsx) — SSR route loader and atom hydration for the app shell.
+- [`src/routes/-index/app.tsx`](./src/routes/-index/app.tsx) — Farcaster Mini App UI entry point.
+- [`src/api/circle-waifu-schema.ts`](./src/api/circle-waifu-schema.ts) — domain schemas and branded types.
+- [`src/features/daily-lab/application.ts`](./src/features/daily-lab/application.ts) — Circle Waifu use cases.
+- [`src/features/daily-lab/projections.ts`](./src/features/daily-lab/projections.ts) — pure dashboard/pool derivation.
+- [`src/db/circle-waifu-repository.ts`](./src/db/circle-waifu-repository.ts) — Postgres/PGlite repository.
+- [`src/design-system/primitives/OrbitStage.tsx`](./src/design-system/primitives/OrbitStage.tsx) — current single-screen waifu layout.
+
+## Scripts
 
 ```bash
-# Run all tests
-bun run test
+bun run dev                 # Start development server
+bun run build               # Build for production
+bun run preview             # Preview production build
 
-# Run specific test suites
-bun run test:unit        # Effect-based unit tests
-bun run test:component   # Component tests (3 browsers)
-bun run test:visual      # Visual regression tests
+bun run typecheck           # TypeScript via tsgo
+bun run lint                # Oxlint
+bun run lint:type-aware     # Type-aware Oxlint
+bun run lint:design-system  # Enforce design-system registry rules
+bun run format              # Format with dprint
+bun run format:check        # Check formatting
 
-# Update visual regression baselines
-bun run test:visual:update
+bun run test                # Vitest suite
+bun run test:unit           # Unit tests
+bun run test:component      # Browser component tests
+bun run test:browser        # Chromium browser tests
+bun run test:visual         # Visual regression tests
+bun run test:coverage       # Coverage suite
 
-# Watch mode
-bun run test:watch
-
-# Type checking
-bun run typecheck
+bun run validate            # Full repository validation
 ```
 
-**Test Types:**
+## Documentation
 
-- **Unit Tests** - Effect-based tests with @effect/vitest
-- **Component Tests** - Real browser testing with Playwright
-- **Visual Regression** - Screenshot comparison across browsers
+Start with:
 
-📚 **See [Testing Guide](./docs/guides/testing.md) for complete documentation**
+- [`SPEC.md`](./SPEC.md) — product behavior and MVP scope.
+- [`AGENTS.md`](./AGENTS.md) — contributor workflow and repository rules.
+- [`docs/architecture/effect-native-atoms.md`](./docs/architecture/effect-native-atoms.md) — required state-management pattern.
+- [`docs/architecture/effect-simple-made-easy-mapping.md`](./docs/architecture/effect-simple-made-easy-mapping.md) — feature architecture mapping.
+- [`docs/design-system/rules.md`](./docs/design-system/rules.md) — UI/design-system rules.
+- [`docs/guides/testing.md`](./docs/guides/testing.md) — testing expectations.
 
----
+## Observability Stack
 
-## 🏗️ Building
-
-```bash
-# Build for production
-bun run build
-
-# Preview production build
-bun run preview
-```
-
----
-
-## 📘 Observability Setup
-
-📚 **See [Observability Setup](./docs/guides/observability-setup.md) for full LAOS + telemetry instructions**
-
----
-
-## 📊 Monitoring & Observability
-
-### Logs (Grafana Loki)
-
-```typescript
-import { Effect } from "effect"
-
-const program = Effect.gen(function*() {
-  yield* Effect.log("Application started")
-  // Logs automatically sent to Loki
-})
-```
-
-### Traces (OpenTelemetry + Tempo)
-
-```typescript
-import { Effect } from "effect"
-
-const program = Effect
-  .gen(function*() {
-    // Your code here
-  })
-  .pipe(
-    Effect.withSpan("operationName", {
-      attributes: { userId: "123" },
-    }),
-  )
-```
-
-### Error Tracking (Sentry)
-
-```typescript
-import { captureException } from "./lib/telemetry-client"
-
-try {
-  // Your code
-} catch (error) {
-  captureException(error)
-}
-```
-
-📚 **See [Telemetry Guide](./docs/guides/telemetry.md) for complete documentation**
-
----
-
-## 📈 Analytics (PostHog)
-
-### Client-Side
-
-```typescript
-import { identifyUser, trackEvent } from "./lib/posthog-client"
-
-// Track events
-trackEvent("button_clicked", {
-  button_id: "signup",
-  page: "/landing",
-})
-
-// Identify users
-identifyUser({
-  userId: "user-123",
-  email: "user@example.com",
-})
-
-// Feature flags
-if (isFeatureFlagEnabled("new_dashboard")) {
-  // Show new dashboard
-}
-```
-
-### Server-Side
-
-```typescript
-import { Effect } from "effect"
-import { trackServerEvent } from "./lib/posthog-server"
-
-const program = Effect.gen(function*() {
-  yield* trackServerEvent("user_signup", {
-    distinctId: "user-123",
-    plan: "premium",
-  })
-})
-```
-
-📚 **See [PostHog Guide](./docs/guides/posthog.md) for complete documentation**
-
----
-
-## 🎯 Effect-TS Integration
-
-This project leverages Effect-TS for:
-
-- Type-safe error handling
-- Composable business logic
-- Resource management with scopes
-- Built-in observability (tracing, logging)
-- Dependency injection
-
-**Example:**
-
-```typescript
-import { Effect } from "effect"
-
-const fetchUser = (userId: string) =>
-  Effect
-    .gen(function*() {
-      yield* Effect.log(`Fetching user: ${userId}`)
-
-      const response = yield* Effect.tryPromise(() =>
-        fetch(`/api/users/${userId}`)
-      )
-
-      const user = yield* Effect.tryPromise(() => response.json())
-
-      return user
-    })
-    .pipe(
-      Effect.withSpan("fetchUser", { attributes: { userId } }),
-    )
-```
-
----
-
-## 📚 Documentation
-
-### For Agents & Contributors
-
-👉 **Start with [AGENTS.md](./AGENTS.md)** - Progressive disclosure guide for the codebase
-
-### Quick Reference
-
-| Task                                | Document                                                                                 |
-| ----------------------------------- | ---------------------------------------------------------------------------------------- |
-| State management (atoms, mutations) | [`docs/architecture/effect-native-atoms.md`](./docs/architecture/effect-native-atoms.md) |
-| Adding new features                 | [`docs/guides/adding-new-features.md`](./docs/guides/adding-new-features.md)             |
-| UI components                       | [`docs/design-system/rules.md`](./docs/design-system/rules.md)                           |
-| Setup & installation                | [`docs/guides/getting-started.md`](./docs/guides/getting-started.md)                     |
-
-### Guides
-
-- 🏗️ [Adding New Features](./docs/guides/adding-new-features.md) - Copy-paste pattern guide
-- 🚀 [Getting Started](./docs/guides/getting-started.md) - Setup and installation
-- 🧪 [Testing Guide](./docs/guides/testing.md) - Writing and running tests
-- 📊 [Telemetry Guide](./docs/guides/telemetry.md) - Monitoring and observability
-- 🧭 [Observability Setup](./docs/guides/observability-setup.md) - LAOS stack setup
-- 🐳 [App Docker Guide](./docs/guides/app-docker.md) - Containerize the app only
-- 🗄️ [PostgreSQL Guide](./docs/guides/database-postgresql.md) - PostgreSQL with Drizzle ORM
-- 💾 [PGlite Guide](./docs/guides/database-pglite.md) - Local embedded Postgres with Drizzle ORM
-- ✨ [Code Quality Guide](./docs/guides/code-quality.md) - Linting and formatting
-- ⚡ [Performance Monitoring](./docs/guides/performance-monitoring.md) - Bundle size & Web Vitals
-
-### Architecture
-
-- ⚡ [Effect-Native Atoms](./docs/architecture/effect-native-atoms.md) - State management pattern
-- 🏗️ [Architecture Overview](./docs/architecture/overview.md) - System design
-- 🧵 [Simple Made Easy](./docs/architecture/simple-made-easy.md) - Simplicity as explicit design policy
-- 🗺️ [Effect-Simple-Made-Easy Mapping](./docs/architecture/effect-simple-made-easy-mapping.md) - Feature patterns
-
-### Complete Documentation
-
-- 🤖 [AGENTS.md](./AGENTS.md) - Agent instructions (START HERE)
-- 📖 [CONTRIBUTING.md](./CONTRIBUTING.md) - Contribution guidelines
-- 🧪 [TESTING_AND_TELEMETRY.md](./TESTING_AND_TELEMETRY.md) - Testing & observability
-
----
-
-## 🔧 Available Scripts
-
-```bash
-# Development
-bun run dev              # Start dev server with hot reload
-
-# Testing
-bun run test             # Run all tests
-bun run test:unit        # Run Effect-based unit tests
-bun run test:component   # Run component tests
-bun run test:visual      # Run visual regression tests
-bun run test:watch       # Run tests in watch mode
-
-# Building
-bun run build            # Build for production
-bun run preview          # Preview production build
-
-# Code Quality
-bun run typecheck        # TypeScript type checking
-bun run lint             # Run Oxlint
-bun run lint:fix         # Fix Oxlint issues automatically
-bun run format           # Format code with Dprint
-bun run format:check     # Check code formatting
-```
-
----
-
-## 🌟 Key Highlights
-
-### Type Safety
-
-- **End-to-end type safety** with TypeScript and Effect-TS
-- **Type-safe RPC** with effect/unstable/rpc
-- **Type-safe routing** with TanStack Router
-
-### Developer Experience
-
-- **Hot Module Replacement** - Instant feedback
-- **Browser DevTools** - Debug tests in real browsers
-- **Comprehensive Testing** - Unit, component, and visual regression
-- **Built-in Monitoring** - Pre-configured observability stack
-
-### Production Ready
-
-- **Self-hosted monitoring** - Full control over data
-- **Error tracking** - Automatic error capture and reporting
-- **Analytics** - Product analytics and feature flags
-- **Distributed tracing** - Track requests across services
-- **Docker deployment** - Complete containerized stack
-
----
-
-## Subagent Ready
-
-### Structure
-
-```
-## 🤖 Subagent Coordination - Delegation Protocol
-├── When to Delegate (use cases + anti-patterns)
-├── Prompt Quality Standards (✅ good / ❌ bad)
-├── Task Specification Template (complete XML)
-├── Task Templates by Type
-│   ├── Feature Implementation
-│   ├── Test Writing
-│   └── Refactor
-├── Subagent Report Format (full XML spec)
-├── Status Definitions (table)
-├── Handoff Document Template
-├── Parallel Execution Pattern (Mermaid diagram)
-└── Common Pitfalls to Avoid
-```
-
-### Key Features
-
-Report Format - Compliant with our spec:
-
-```
-<agent_report>
-  <task_id>...</task_id>
-  <status>complete | partial | blocked | failed</status>
-  <work_completed>...</work_completed>
-  <files_changed>...</files_changed>
-  <verification>...</verification>
-  <outcomes>...</outcomes>
-  <incomplete_tasks>...</incomplete_tasks>
-  <blockers>...</blockers>
-  <decisions_made>...</decisions_made>
-  <follow_up_tasks>...</follow_up_tasks>
-  <notes>...</notes>
-</agent_report>
-```
-
-Prompt Quality Standards - From our style guide:
-
-- ✅ Specific, Complete, Constrained, Structured, Example-driven
-- ❌ Vague, Context-free, Unconstrained, Wall-of-text
-
-Task Templates - Ready-to-copy XML specs for features, tests, and refactors with success criteria and constraints.
-
-## 🤝 Contributing
-
-We welcome contributions! Please read [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on:
-
-- Setting up your development environment
-- Project architecture and patterns
-- Testing requirements
-- Code style and conventions
-- Pull request process
-
----
-
-## 📄 License
-
-[Your License Here]
-
----
-
-## 🙏 Acknowledgments
-
-Built with amazing open-source technologies:
-
-- [Effect-TS](https://effect.website)
-- [TanStack](https://tanstack.com)
-- [Bun](https://bun.sh)
-- [Vitest](https://vitest.dev)
-- [Grafana](https://grafana.com)
-- [Sentry](https://sentry.io)
-- [PostHog](https://posthog.com)
-- [Playwright](https://playwright.dev)
-
----
-
-**Ready to build?** 🚀
-
-```bash
-bun install
-bun run dev
-```
-
-For the full observability stack (outside this repo):
+The app can connect to the LAOS/self-hosted observability stack used by the starter foundation.
 
 ```bash
 git clone https://github.com/dtechvision/laos.git ../laos
@@ -490,8 +150,8 @@ cd ../laos
 docker compose up -d
 ```
 
-Build the app docker image (Nix helper):
+Then copy `.env.example` to `.env` and fill Sentry, PostHog, OTLP, Loki, and Pyroscope values as needed.
 
-```bash
-nix run .#build-docker
-```
+## Current Status
+
+Circle Waifu is an MVP/prototype implementation. The repo has the domain contracts, application workflows, persistence adapter, SSR hydration, Farcaster app shell, and current waifu UI. Some external integrations are intentionally boundary-shaped and still need production credentials, real Farcaster identity verification, and live Circles event verification before launch.
